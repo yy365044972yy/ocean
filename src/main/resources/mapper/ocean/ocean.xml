@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.ocean.mapper.ocean.TotalMapper">
+
+<!--写老系统的SQL语句-->
+    <select id="selectAll" resultType="com.hb.ocean.entity.AbUser">
+        select LoginName,UserName,Sex,Password,Telephone,RoleID,State,Email,UserRemark,CreateTime from HUser group by LoginName
+      </select>
+
+
+
+</mapper>
