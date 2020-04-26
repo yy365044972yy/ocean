@@ -91,6 +91,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
                 continueNum++;
                 continue;
             }
+
             int i = itemOrderMapper.selectZhianUserFindAccount(abUser.getLoginName());
             if (i > 0) {
                 continueNum++;
@@ -209,7 +210,11 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
         for(ZhianUser zhianUser:zhianUserAllFindByAb) {
             //根据用户类型获取bean
-            InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
+            Object o = map.get(zhianUser.getCertificationType());
+            if(o==null){
+                continue;
+            }
+            InsertEssentialInformation bean = SpringContextUtils.getBean(o.toString(), InsertEssentialInformation.class);
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
             if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {

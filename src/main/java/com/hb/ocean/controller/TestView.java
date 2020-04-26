@@ -39,7 +39,8 @@ public class TestView {
     }
 
 
-
+    @GetMapping("/startUserMiddleTab")
+    @ResponseBody
     public BaseResponse startUserMiddleTab() throws ParseException {
         return abZhianService.insertEss();
     }

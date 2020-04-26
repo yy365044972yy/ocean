@@ -9,7 +9,7 @@
     </select>
 
     <insert id="insertAll" parameterType="com.hb.ocean.entity.ZhianUser">
-        insert into t_user (id,name,account,password,sex,mobile,email,active,createTime,ab,userRemark) VALUES (#{id},#{name},#{account},#{password},#{sex},#{mobile},#{email},#{active},#{createTime},#{ab},#{userRemark});
+        insert into t_user (id,name,account,password,sex,mobile,email,active,createTime,ab,userRemark,certificationType) VALUES (#{id},#{name},#{account},#{password},#{sex},#{mobile},#{email},#{active},#{createTime},#{ab},#{userRemark},${certificationType});
     </insert>
 
     <delete id="delZhianUserAll" >
