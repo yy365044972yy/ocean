@@ -20,6 +20,10 @@
         select count(id) from t_user where account=#{account}
     </select>
 
+    <select id="getZhianUserAllFindByAb" resultType="com.hb.ocean.entity.ZhianUser">
+        select * from t_user where ab=1
+    </select>
+
     <!--<insert id="insertUserRole" parameterType="com.hb.ocean.entity.UserRole">-->
         <!--insert into t_user_role (id,userId,roleId) VALUES (#{id},#{userId},#{roleId});-->
     <!--</insert>-->

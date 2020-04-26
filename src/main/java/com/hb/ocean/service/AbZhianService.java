@@ -11,5 +11,6 @@ public interface AbZhianService {
 //     Integer setZhianUser(ZhianUser zhianUser);
     BaseResponse delAllUser();
 
+    BaseResponse insertEss();
 
 }

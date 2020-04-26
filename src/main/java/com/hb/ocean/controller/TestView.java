@@ -38,5 +38,12 @@ public class TestView {
 
 
 
+    public BaseResponse startUserMiddleTab(){
+        return abZhianService.insertEss();
+    }
+
+
+
+
 
 }

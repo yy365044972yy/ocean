@@ -26,6 +26,8 @@ public interface ItemOrderMapper {
 
     int selectZhianUserFindAccount(String account);
 
+    List<ZhianUser> getZhianUserAllFindByAb();
+
 //    int insertUserRole(UserRole userRole);
 
     int insertSubuserTraffic(SubuserTraffic subuserTraffic);

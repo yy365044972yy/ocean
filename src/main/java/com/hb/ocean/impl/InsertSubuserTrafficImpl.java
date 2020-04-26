@@ -2,6 +2,7 @@ package com.hb.ocean.impl;
 
 import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
+import com.hb.ocean.entity.AbUser;
 import com.hb.ocean.entity.SubuserTraffic;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
@@ -25,9 +26,12 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
         SubuserTraffic subuserTraffic = new SubuserTraffic();
         subuserTraffic.setId(UUID.randomUUID().toString().replace("-", ""));
         subuserTraffic.setUserId(zhianUser.getId());
+
+
+        AbUser abUser = totalMapper.selectUserFindId(zhianUser.getAbId());
 //        subuserTraffic.setCompanyName();
 
-//        totalMapper.sel
+
         return setResultSuccess();
     }
 }

@@ -22,16 +22,14 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 
     public Map<String, Object> map;
 
-    static {
-
-    }
-
     {
         map = new HashMap<>();
+        //1001主管机关
+        map.put(ZHUGUANJIGUAN,"insertSubuserMainChargeImpl");
         //1002行业管理机构
-        map.put(ZHUGUANBUMEN, "insertSubuserThrid");
+        map.put(ZHUGUANBUMEN, "insertSubuserMainChargeImpl");
         //2001交通运输企业
-        map.put(JIAOTONGYUNSHUQIYE, "insertSubuserTraffic");
+        map.put(JIAOTONGYUNSHUQIYE, "insertSubuserTrafficImpl");
         //3001从业人员
         map.put(CONGYERENYUAN, "insertSubuserpersonalImpl");
         //3002评审员
@@ -52,11 +50,15 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     static final String NUMTHREE = "3";
     static final String NUMFOUR = "4";
     static final String NUMFIVE = "5";
+    static final String NUMJIU = "9";
     static final String SEXMAN = "男";
     static final String SEXWOMEN = "女";
     static final String ISNUMM = "";
+
+    //1001主管机关
+    static final String ZHUGUANJIGUAN = "1001";
     //1002行业管理机构
-    static final String ZHUGUANBUMEN = "1001";
+    static final String ZHUGUANBUMEN = "1002";
     //2001交通运输企业
     static final String JIAOTONGYUNSHUQIYE = "2001";
     //3001从业人员
@@ -77,7 +79,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     @Override
     public BaseResponse getAllUser() throws Exception {
 
-        List<AbUser> users = totalMapper.selectAll();
+        List<AbUser> users = totalMapper.selectUserAll();
 //        List<ZhianUser> zhianUserAll = itemOrderMapper.getZhianUserAll();
         int continueNum = 0;
         int okNum = 0;
@@ -110,16 +112,19 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             String certificationType = "";
             switch (abUser.getRoleID()) {
                 case NUMONE:
-                    certificationType = ZHUGUANBUMEN;
+                    certificationType = JIAOTONGYUNSHUQIYE;
                     break;
                 case NUMTWO:
-                    certificationType = JIAOTONGYUNSHUQIYE;
+                    certificationType = ZHUGUANJIGUAN;
                     break;
                 case NUMTHREE:
                     certificationType = DISANFANGJIGOU;
                     break;
                 case NUMFOUR:
                     certificationType = PINGSHENYUAN;
+                    break;
+                case NUMJIU:
+                    certificationType = ZHUGUANJIGUAN;
                     break;
                 //其他状态不知道是啥
                 /*case NUMFIVE:
@@ -198,13 +203,17 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      *
      * @return
      */
-    public BaseResponse insertEss(ZhianUser zhianUser) {
-        //根据用户类型获取bean
-        InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
-        BaseResponse baseResponse = bean.toInsert(zhianUser);
-        //判断状态码
-        if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
-            setResultError("异常数据,userId为" + zhianUser.getId());
+    @Override
+    public BaseResponse insertEss() {
+        List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
+        for(ZhianUser zhianUser:zhianUserAllFindByAb) {
+            //根据用户类型获取bean
+            InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
+            BaseResponse baseResponse = bean.toInsert(zhianUser);
+            //判断状态码
+            if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
+                setResultError("异常数据,userId为" + zhianUser.getId());
+            }
         }
         return setResultSuccess("添加完成!");
 
