@@ -5,9 +5,10 @@ import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.service.InsertEssentialInformation;
 
 /**
- * 企业
+ * 评审员
  */
-public class InsertSubuserTrafficImpl extends BaseApiService<String> implements InsertEssentialInformation {
+
+public class InsertSubuserpersonalPsyImpl extends BaseApiService<String> implements InsertEssentialInformation {
 
 
     @Override

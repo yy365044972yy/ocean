@@ -1,6 +1,7 @@
 package com.hb.ocean.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.entity.AbUser;
 import com.hb.ocean.entity.SubuserTraffic;
 import com.hb.ocean.entity.UserRole;
@@ -29,8 +30,16 @@ static {
 
     {
         map=new HashMap<>();
+        //1002行业管理机构
         map.put(ZHUGUANBUMEN,"insertSubuserThrid");
+        //2001交通运输企业
         map.put(JIAOTONGYUNSHUQIYE,"insertSubuserTraffic");
+        //3001从业人员
+        map.put(CONGYERENYUAN,"insertSubuserpersonalImpl");
+        //3002评审员
+        map.put(PINGSHENYUAN,"insertSubuserpersonalPsyImpl");
+        //4001第三方机构
+        map.put(DISANFANGJIGOU,"insertSubuserThridImpl");
 
     }
     @Autowired
@@ -192,9 +201,9 @@ static {
     public String insertEss(ZhianUser zhianUser){
 
         InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
-        String s = bean.toInsert();
 
-        return null;
+        BaseApiService baseApiService = bean.toInsert(zhianUser);
+        return "";
     }
 
 
