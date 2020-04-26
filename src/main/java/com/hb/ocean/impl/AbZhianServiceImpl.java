@@ -155,6 +155,7 @@ static {
             zhianUser.setCreateTime(createTime == null || ISNUMM.equals(createTime) ? new Date() : df_time_s.parse(createTime));
             //标识该数据为旧系统转移数据
             zhianUser.setAb(NUMONE);
+            zhianUser.setAbId(abUser.getUserID());
 
             try {
                 itemOrderMapper.insertAll(zhianUser);

@@ -167,5 +167,9 @@ public class ZhianUser implements Serializable {
      */
     private String userRemark;
 
+    /**
+     * 安标系统导入过来的ID
+     */
+    private String abId;
 
 }

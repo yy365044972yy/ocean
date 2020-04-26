@@ -36,5 +36,7 @@ public class AbUser implements Serializable {
 
     private String createTime;
 
+    private String userID;
+
 
 }
