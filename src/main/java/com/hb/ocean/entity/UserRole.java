@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 
 @Data
-@ConfigurationProperties(prefix = "druid")
 @Component
 public class UserRole implements Serializable {
 

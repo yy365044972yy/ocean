@@ -13,7 +13,6 @@ import java.io.Serializable;
 @Data
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "druid")
 @Component
 public class AbUser implements Serializable {
 
