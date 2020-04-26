@@ -10,9 +10,14 @@ import java.util.List;
  */
 public interface TotalMapper  {
 
-
+//<!--写老系统的SQL语句-->
     /*@Param("id") String id*/
-    List<AbUser> selectAll();
+    List<AbUser> selectUserAll();
+
+
+    AbUser selectUserFindId(String id);
+
+
 
 
 

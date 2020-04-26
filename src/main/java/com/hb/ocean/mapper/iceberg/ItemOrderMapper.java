@@ -13,13 +13,8 @@ import java.util.List;
 
 public interface ItemOrderMapper {
 
-/*    *//**
-     * 权益购买数（包含兑换,领取,兑换）
-     *
-     * @param start start
-     * @param end   end
-     * @return count
-     *//*
+/*
+<!--写新系统的SQL语句-->
     Integer selectCountSuccessOrder(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
     */
 
@@ -34,5 +29,7 @@ public interface ItemOrderMapper {
 //    int insertUserRole(UserRole userRole);
 
     int insertSubuserTraffic(SubuserTraffic subuserTraffic);
+
+
 
 }

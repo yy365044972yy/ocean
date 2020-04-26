@@ -3,8 +3,12 @@
 <mapper namespace="com.hb.ocean.mapper.ocean.TotalMapper">
 
 <!--写老系统的SQL语句-->
-    <select id="selectAll" resultType="com.hb.ocean.entity.AbUser">
+    <select id="selectUserAll" resultType="com.hb.ocean.entity.AbUser">
         select UserID,LoginName,UserName,Sex,Password,Telephone,RoleID,State,Email,UserRemark,CreateTime from HUser group by LoginName
+      </select>
+
+    <select id="selectUserFindId" resultType="com.hb.ocean.entity.AbUser">
+        select UserID,LoginName,UserName,Sex,Password,Telephone,RoleID,State,Email,UserRemark,CreateTime from HUser where UserID=#{id}
       </select>
 
 

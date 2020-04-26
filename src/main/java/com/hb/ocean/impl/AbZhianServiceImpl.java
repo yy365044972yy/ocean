@@ -75,7 +75,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      * @throws Exception
      */
     @Override
-    public String getAllUser() throws Exception {
+    public BaseResponse getAllUser() throws Exception {
 
         List<AbUser> users = totalMapper.selectAll();
 //        List<ZhianUser> zhianUserAll = itemOrderMapper.getZhianUserAll();
@@ -158,7 +158,8 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             try {
                 itemOrderMapper.insertAll(zhianUser);
             } catch (Exception e) {
-                return "错误数据" + JSON.toJSONString(zhianUser) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage());
+                return setResultError("错误数据" + JSON.toJSONString(zhianUser) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage()));
+
             }
 
 
@@ -168,18 +169,17 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             list.add(zhianUser);
         }
 
-        for (ZhianUser zhianUser : list) {
+       /* for (ZhianUser zhianUser : list) {
 
-            insertEss(zhianUser);
-        }
+            BaseResponse baseResponse = insertEss(zhianUser);
+        }*/
 
 
 //        String s = JSON.toJSONString(zhianUserAll);
 //        String b = JSON.toJSONString(users);
 //        System.out.println(s);
 //        System.out.println(b);
-        return "总数量:" + users.size() + "\n跳过数量:" + continueNum + "\n成功数量:" + okNum;
-
+        return setResultSuccess("总数量:" + users.size() + "\n跳过数量:" + continueNum + "\n成功数量:" + okNum);
     }
 
     /**
@@ -188,8 +188,9 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      * @return
      */
     @Override
-    public Integer delAllUser() {
-        return itemOrderMapper.delZhianUserAll();
+    public BaseResponse delAllUser() {
+        int i = itemOrderMapper.delZhianUserAll();
+        return setResultSuccess("删除了"+i+"条");
     }
 
     /**

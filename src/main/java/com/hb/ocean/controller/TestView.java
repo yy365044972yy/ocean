@@ -1,5 +1,6 @@
 package com.hb.ocean.controller;
 
+import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.service.AbZhianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,20 +21,19 @@ public class TestView {
 
     @GetMapping("/startUser")
     @ResponseBody
-    public String startUser() throws Exception{
+    public BaseResponse startUser() throws Exception{
         //user表处理
-        String allUser = abZhianService.getAllUser();
+        BaseResponse allUser = abZhianService.getAllUser();
 
         return allUser;
     }
 
     @GetMapping("/delUser")
     @ResponseBody
-    public String delUser() throws Exception{
+    public BaseResponse delUser() throws Exception {
         //user表处理
-        Integer integer = abZhianService.delAllUser();
-
-        return "删除了"+integer+"条";
+        BaseResponse baseResponse = abZhianService.delAllUser();
+        return baseResponse;
     }
 
 
