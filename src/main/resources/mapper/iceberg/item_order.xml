@@ -30,7 +30,12 @@
 
 
     <insert id="insertSubuserTraffic" parameterType="com.hb.ocean.entity.SubuserTraffic">
-        insert into t_subuserTraffic (id,userId,roleId) VALUES (#{id},#{userId},#{roleId});
+        insert into t_subuserTraffic (id,userId,companyName,comTime,comfailureTime,roadTransportNO,regAddress,companyNo,companyType,companySubType) VALUES (#{id},#{userId},#{companyName},#{comTime},#{comfailureTime},#{roadTransportNO},#{regAddress},#{companyNo},#{companyType},#{companySubType});
         </insert>
+
+    <select id="getDicData" resultType="com.hb.ocean.entity.DicData">
+        select id,name,pid from t_dic_data
+    </select>
+
     </mapper>
 

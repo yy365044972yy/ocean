@@ -3,6 +3,8 @@ package com.hb.ocean.service;
 
 import com.hb.ocean.base.BaseResponse;
 
+import java.text.ParseException;
+
 public interface AbZhianService {
 
 
@@ -11,6 +13,8 @@ public interface AbZhianService {
 //     Integer setZhianUser(ZhianUser zhianUser);
     BaseResponse delAllUser();
 
-    BaseResponse insertEss();
+    BaseResponse insertEss() throws ParseException;
+
+
 
 }

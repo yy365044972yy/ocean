@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+
 
 /**
  * @author QuCheng on 2019-09-17.
@@ -38,7 +40,7 @@ public class TestView {
 
 
 
-    public BaseResponse startUserMiddleTab(){
+    public BaseResponse startUserMiddleTab() throws ParseException {
         return abZhianService.insertEss();
     }
 

@@ -1,8 +1,6 @@
 package com.hb.ocean.mapper.iceberg;
 
-import com.hb.ocean.entity.SubuserTraffic;
-import com.hb.ocean.entity.UserRole;
-import com.hb.ocean.entity.ZhianUser;
+import com.hb.ocean.entity.*;
 import com.hb.ocean.entity.ZhianUser;
 
 import java.util.List;
@@ -31,6 +29,8 @@ public interface ItemOrderMapper {
 //    int insertUserRole(UserRole userRole);
 
     int insertSubuserTraffic(SubuserTraffic subuserTraffic);
+
+    List<DicData> getDicData();
 
 
 

@@ -1,5 +1,6 @@
 package com.hb.ocean.mapper.ocean;
 
+import com.hb.ocean.entity.AbSubuserTraffic;
 import com.hb.ocean.entity.AbUser;
 import com.hb.ocean.entity.ZhianUser;
 
@@ -16,6 +17,8 @@ public interface TotalMapper  {
 
 
     AbUser selectUserFindId(String id);
+
+    AbSubuserTraffic selectAbSubuserTrafficFindLoginName(String LoginName);
 
 
 

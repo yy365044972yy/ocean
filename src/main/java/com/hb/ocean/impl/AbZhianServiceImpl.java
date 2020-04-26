@@ -14,6 +14,7 @@ import com.hb.ocean.utils.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -204,7 +205,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      * @return
      */
     @Override
-    public BaseResponse insertEss() {
+    public BaseResponse insertEss() throws ParseException {
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
         for(ZhianUser zhianUser:zhianUserAllFindByAb) {
             //根据用户类型获取bean
