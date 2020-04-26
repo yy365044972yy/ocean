@@ -1,6 +1,7 @@
 package com.hb.ocean.impl;
 
 import com.hb.ocean.base.BaseApiService;
+import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.service.InsertEssentialInformation;
 
@@ -12,7 +13,7 @@ public class InsertSubuserpersonalPsyImpl extends BaseApiService<String> impleme
 
 
     @Override
-    public BaseApiService toInsert(ZhianUser zhianUser) {
+    public BaseResponse toInsert(ZhianUser zhianUser) {
         return null;
     }
 }

@@ -203,7 +203,9 @@ static {
 
         InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
 
-        BaseApiService baseApiService = bean.toInsert(zhianUser);
+        bean.toInsert(zhianUser);
+
+
         return "";
     }
 
