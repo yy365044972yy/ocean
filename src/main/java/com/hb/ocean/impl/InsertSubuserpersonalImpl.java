@@ -13,6 +13,6 @@ public class InsertSubuserpersonalImpl extends BaseApiService<String> implements
 
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
-        return null;
+        return setResultSuccess();
     }
 }

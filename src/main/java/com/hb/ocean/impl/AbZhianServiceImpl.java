@@ -2,9 +2,9 @@ package com.hb.ocean.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.hb.ocean.base.BaseApiService;
+import com.hb.ocean.base.BaseResponse;
+import com.hb.ocean.constants.Constants;
 import com.hb.ocean.entity.AbUser;
-import com.hb.ocean.entity.SubuserTraffic;
-import com.hb.ocean.entity.UserRole;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
@@ -13,35 +13,34 @@ import com.hb.ocean.service.InsertEssentialInformation;
 import com.hb.ocean.utils.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class AbZhianServiceImpl implements AbZhianService {
+public class AbZhianServiceImpl extends BaseApiService implements AbZhianService {
 
-    public Map<String,Object> map;
-static {
+    public Map<String, Object> map;
 
-}
-
-    {
-        map=new HashMap<>();
-        //1002行业管理机构
-        map.put(ZHUGUANBUMEN,"insertSubuserThrid");
-        //2001交通运输企业
-        map.put(JIAOTONGYUNSHUQIYE,"insertSubuserTraffic");
-        //3001从业人员
-        map.put(CONGYERENYUAN,"insertSubuserpersonalImpl");
-        //3002评审员
-        map.put(PINGSHENYUAN,"insertSubuserpersonalPsyImpl");
-        //4001第三方机构
-        map.put(DISANFANGJIGOU,"insertSubuserThridImpl");
+    static {
 
     }
+
+    {
+        map = new HashMap<>();
+        //1002行业管理机构
+        map.put(ZHUGUANBUMEN, "insertSubuserThrid");
+        //2001交通运输企业
+        map.put(JIAOTONGYUNSHUQIYE, "insertSubuserTraffic");
+        //3001从业人员
+        map.put(CONGYERENYUAN, "insertSubuserpersonalImpl");
+        //3002评审员
+        map.put(PINGSHENYUAN, "insertSubuserpersonalPsyImpl");
+        //4001第三方机构
+        map.put(DISANFANGJIGOU, "insertSubuserThridImpl");
+
+    }
+
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
@@ -66,7 +65,6 @@ static {
     static final String PINGSHENYUAN = "3002";
     //4001第三方机构
     static final String DISANFANGJIGOU = "4001";
-
 
 
     /**
@@ -170,11 +168,10 @@ static {
             list.add(zhianUser);
         }
 
-        for(ZhianUser zhianUser:list){
+        for (ZhianUser zhianUser : list) {
 
             insertEss(zhianUser);
         }
-
 
 
 //        String s = JSON.toJSONString(zhianUserAll);
@@ -187,6 +184,7 @@ static {
 
     /**
      * 删除数据
+     *
      * @return
      */
     @Override
@@ -194,23 +192,22 @@ static {
         return itemOrderMapper.delZhianUserAll();
     }
 
-
     /**
      * 处理基本信息
+     *
      * @return
      */
-    public String insertEss(ZhianUser zhianUser){
-
+    public BaseResponse insertEss(ZhianUser zhianUser) {
+        //根据用户类型获取bean
         InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
+        BaseResponse baseResponse = bean.toInsert(zhianUser);
+        //判断状态码
+        if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
+            setResultError("异常数据,userId为" + zhianUser.getId());
+        }
+        return setResultSuccess("添加完成!");
 
-        bean.toInsert(zhianUser);
-
-
-        return "";
     }
-
-
-
 
 
 }

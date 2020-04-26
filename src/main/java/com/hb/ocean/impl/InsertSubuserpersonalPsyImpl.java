@@ -14,6 +14,6 @@ public class InsertSubuserpersonalPsyImpl extends BaseApiService<String> impleme
 
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
-        return null;
+        return setResultSuccess();
     }
 }

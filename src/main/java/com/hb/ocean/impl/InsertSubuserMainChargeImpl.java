@@ -13,6 +13,6 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
 
-        return setResultSuccess("好的");
+        return setResultSuccess();
     }
 }

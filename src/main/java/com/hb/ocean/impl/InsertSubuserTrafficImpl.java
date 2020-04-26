@@ -18,7 +18,9 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
     public BaseResponse toInsert(ZhianUser zhianUser) {
         SubuserTraffic subuserTraffic=new SubuserTraffic();
         subuserTraffic.setId(UUID.randomUUID().toString().replace("-",""));
+        subuserTraffic.setUserId(zhianUser.getId());
 
-        return null;
+
+        return setResultSuccess();
     }
 }
