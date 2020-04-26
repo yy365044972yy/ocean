@@ -22,6 +22,17 @@ import java.util.*;
 @Service
 public class AbZhianServiceImpl implements AbZhianService {
 
+    public Map<String,Object> map;
+static {
+
+}
+
+    {
+        map=new HashMap<>();
+        map.put(ZHUGUANBUMEN,"insertSubuserThrid");
+        map.put(JIAOTONGYUNSHUQIYE,"insertSubuserTraffic");
+
+    }
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
@@ -179,11 +190,10 @@ public class AbZhianServiceImpl implements AbZhianService {
      * @return
      */
     public String insertEss(ZhianUser zhianUser){
-        Map<String,Object> map=new HashMap<>();
-//        map.put(ZHUGUANBUMEN,"insertSubuserTraffic");
-        map.put(JIAOTONGYUNSHUQIYE,"insertSubuserTraffic");
 
-//        SpringContextUtils.getBean(payBeanId, InsertEssentialInformation.class);
+        InsertEssentialInformation bean = SpringContextUtils.getBean(map.get(zhianUser.getCertificationType()).toString(), InsertEssentialInformation.class);
+        String s = bean.toInsert();
+
         return null;
     }
 
