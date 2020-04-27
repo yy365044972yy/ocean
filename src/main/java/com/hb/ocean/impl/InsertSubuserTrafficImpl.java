@@ -81,6 +81,7 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
         String s2 = smallType.get(abSubuserTraffic.getBusinessTypeTwo());
         subuserTraffic.setCompanyType(s==null||Constants.ISNULL.equals(s)?"":s);
         subuserTraffic.setCompanySubType(s2==null||Constants.ISNULL.equals(s2)?"":s2);
+        subuserTraffic.setAb("1");
         itemOrderMapper.insertSubuserTraffic(subuserTraffic);
         return setResultSuccess();
     }

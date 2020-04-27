@@ -198,6 +198,12 @@ public class SubuserTraffic implements Serializable {
 	 */
 	private java.util.Date updateApplayTime;
 
+
+	/**
+	 * 是否是安标导入过来的
+	 */
+	private String ab;
+
 }
 
 	
