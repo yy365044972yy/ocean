@@ -43,6 +43,12 @@ public class TestView {
     }
 
 
+    /**
+     * 处理基础信息表后续的企业/主管机关/人员等表
+     * @return
+     * @throws ParseException
+     */
+
     @GetMapping("/startUserMiddleTab")
     @ResponseBody
     public BaseResponse startUserMiddleTab() throws ParseException {
