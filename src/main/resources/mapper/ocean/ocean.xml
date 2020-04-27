@@ -18,5 +18,9 @@
       </select>
 
 
+    <select id="selectAbSubuserpersonalByLoginName" resultType="com.hb.ocean.entity.Subuserpersonal" >
+select EvaluationClerkName as name,EvaluationClerkID as cardno,City as area,Email as email,SkillTitle as skillName,HighestDegree as lastStudy,Major as studyName,WorkMajor as nowWork,WorkMajorYears as workYears,LearningExperience as studyDes,WorkExperience as workDes,Archievement as majorDes,ProofUnit as proveCpn,ProofPerson as proveName,ProofPhone as proveTel from EvaluationClerk where LoginName=#{loginName}
+    </select>
+
 
 </mapper>

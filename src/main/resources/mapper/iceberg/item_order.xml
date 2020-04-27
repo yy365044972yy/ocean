@@ -43,6 +43,12 @@
         select count(id) from t_subuserTraffic where roadTransportNO=#{roadTransportNO}
     </select>
 
+    <insert id="insertInsertSubuserpersonal" parameterType="com.hb.ocean.entity.UserRole">
+        insert into t_subuserpersonal (name,cardno,area,email,skillName,lastStudy,studyName,nowWork,workYears,studyDes,workDes,
+    majorDes,proveCpn,proveName,proveTel) VALUES(#{name},#{cardno},#{area},#{email},#{skillName},#{lastStudy},#{studyName},
+    #{nowWork},#{workYears},#{studyDes},#{workDes},#{majorDes},#{proveCpn},#{proveName},#{proveTel});
+       </insert>
 
-    </mapper>
+
+        </mapper>
 

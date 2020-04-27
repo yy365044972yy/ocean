@@ -2,6 +2,7 @@ package com.hb.ocean.mapper.ocean;
 
 import com.hb.ocean.entity.AbSubuserTraffic;
 import com.hb.ocean.entity.AbUser;
+import com.hb.ocean.entity.Subuserpersonal;
 import com.hb.ocean.entity.ZhianUser;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface TotalMapper  {
 
 
 
-
+    Subuserpersonal selectAbSubuserpersonalByLoginName( String loginName);
 
 
 }
