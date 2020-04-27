@@ -166,13 +166,8 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
                 itemOrderMapper.insertAll(zhianUser);
             } catch (Exception e) {
                 return setResultError("错误数据" + JSON.toJSONString(zhianUser) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage()));
-
             }
-
-
             okNum++;
-
-
             list.add(zhianUser);
         }
 
@@ -207,6 +202,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      */
     @Override
     public BaseResponse insertEss() throws ParseException {
+        List<String> list=new ArrayList<>();
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
         for(ZhianUser zhianUser:zhianUserAllFindByAb) {
             //根据用户类型获取bean
@@ -218,8 +214,11 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
             if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
-                setResultError("异常数据,userId为" + zhianUser.getId());
+                list.add(baseResponse.getMsg()+"\n");
             }
+        }
+        if(list.size()>0){
+            return setResultError(JSON.toJSONString(list));
         }
         return setResultSuccess("添加完成!");
 

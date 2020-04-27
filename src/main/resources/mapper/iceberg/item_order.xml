@@ -37,5 +37,12 @@
         select id,name,pid from t_dic_data
     </select>
 
+
+
+    <select id="getZhianSubuserTrafficByRoadTransportNO" resultType="java.lang.Integer">
+        select count(id) from t_subuserTraffic where roadTransportNO=#{roadTransportNO}
+    </select>
+
+
     </mapper>
 

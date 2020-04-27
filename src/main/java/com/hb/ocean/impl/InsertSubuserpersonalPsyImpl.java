@@ -4,11 +4,12 @@ import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.service.InsertEssentialInformation;
+import org.springframework.stereotype.Component;
 
 /**
  * 评审员
  */
-
+@Component
 public class InsertSubuserpersonalPsyImpl extends BaseApiService<String> implements InsertEssentialInformation {
 
 

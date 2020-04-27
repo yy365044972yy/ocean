@@ -7,10 +7,9 @@ import com.hb.ocean.entity.*;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.InsertEssentialInformation;
-import com.hb.ocean.utils.LiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,6 +17,7 @@ import java.util.*;
 /**
  * 企业
  */
+@Component
 public class InsertSubuserTrafficImpl extends BaseApiService<String> implements InsertEssentialInformation {
 
     @Autowired
@@ -29,25 +29,36 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
     private Map<String,String> bigType=new HashMap<>();
     private Map<String,String> smallType=new HashMap<>();
 
-    {
-        List<DicData> dicData = itemOrderMapper.getDicData();
-        for(DicData d:dicData){
-            if(d.getPid()==null||Constants.ISNULL.equals(d.getPid())){
-                bigType.put(d.getName(),d.getId());
-            }else{
-                smallType.put(d.getName(),d.getId());
-            }
-        }
-    }
+
 
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) throws ParseException {
+
+        if(bigType.size()==0||smallType.size()==0){
+            bigType=new HashMap<>();
+            smallType=new HashMap<>();
+            List<DicData> dicData = itemOrderMapper.getDicData();
+            for(DicData d:dicData){
+                if(d.getPid()==null||Constants.ISNULL.equals(d.getPid())){
+                    bigType.put(d.getName(),d.getId());
+                }else{
+                    smallType.put(d.getName(),d.getId());
+                }
+            }
+        }
         SubuserTraffic subuserTraffic = new SubuserTraffic();
         subuserTraffic.setId(UUID.randomUUID().toString().replace("-", ""));
         subuserTraffic.setUserId(zhianUser.getId());
 //        AbUser abUser = totalMapper.selectUserFindId(zhianUser.getAbId());
 //        subuserTraffic.setCompanyName();
         AbSubuserTraffic abSubuserTraffic = totalMapper.selectAbSubuserTrafficFindLoginName(zhianUser.getAccount());
+        if(abSubuserTraffic==null||abSubuserTraffic.getRoadTransportNO()==null||Constants.ISNULL.equals(abSubuserTraffic.getRoadTransportNO())){
+            return setResultError("统一信用代码为空");
+        }
+        int zhianSubuserTrafficByRoadTransportNO = itemOrderMapper.getZhianSubuserTrafficByRoadTransportNO(abSubuserTraffic.getRoadTransportNO());
+        if(zhianSubuserTrafficByRoadTransportNO>0){
+            return setResultError("统一信用代码已被占用");
+        }
         subuserTraffic.setCompanyName(abSubuserTraffic.getBusinessName());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -32,6 +32,6 @@ public interface ItemOrderMapper {
 
     List<DicData> getDicData();
 
-
+    int getZhianSubuserTrafficByRoadTransportNO(String roadTransportNO);
 
 }
