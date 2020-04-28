@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Subuserpersonal {
 
+    private String id;
     /**
      * 姓名
      */

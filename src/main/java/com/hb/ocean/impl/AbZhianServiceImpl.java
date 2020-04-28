@@ -203,8 +203,9 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      */
     @Override
     public BaseResponse insertEss() throws ParseException {
-        List<String> list = new ArrayList<>();
+        List<Map<String,String>> list = new ArrayList<>();
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
+        String ids="";
         for (ZhianUser zhianUser : zhianUserAllFindByAb) {
             //根据用户类型获取bean
             Object o = map.get(zhianUser.getCertificationType());
@@ -215,11 +216,15 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
             if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
-                list.add(baseResponse.getMsg() + "\n");
+                Map<String,String> map=new HashMap<>();
+                map.put("msg",baseResponse.getMsg().split(",")[0]);
+                list.add(map);
+                ids+=baseResponse.getMsg().split(",")[1]+",";
             }
+
         }
         if (list.size() > 0) {
-            return setResultError(JSON.toJSONString(list));
+            return setResult(200,JSON.toJSONString(list),ids);
         }
         return setResultSuccess("添加完成!");
 

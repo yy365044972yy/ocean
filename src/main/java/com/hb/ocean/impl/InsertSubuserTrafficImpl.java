@@ -53,11 +53,11 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
 //        subuserTraffic.setCompanyName();
         AbSubuserTraffic abSubuserTraffic = totalMapper.selectAbSubuserTrafficFindLoginName(zhianUser.getAccount());
         if(abSubuserTraffic==null||abSubuserTraffic.getRoadTransportNO()==null||Constants.ISNULL.equals(abSubuserTraffic.getRoadTransportNO())){
-            return setResultError("统一信用代码为空");
+            return setResultError("企业:统一信用代码为空,"+zhianUser.getId());
         }
         int zhianSubuserTrafficByRoadTransportNO = itemOrderMapper.getZhianSubuserTrafficByRoadTransportNO(abSubuserTraffic.getRoadTransportNO());
         if(zhianSubuserTrafficByRoadTransportNO>0){
-            return setResultError("统一信用代码已被占用");
+            return setResultError("企业:统一信用代码已被占用,"+zhianUser.getId());
         }
         subuserTraffic.setCompanyName(abSubuserTraffic.getBusinessName());
 

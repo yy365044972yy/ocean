@@ -44,8 +44,8 @@
     </select>
 
     <insert id="insertInsertSubuserpersonal" parameterType="com.hb.ocean.entity.Subuserpersonal">
-        insert into t_subuserpersonal (name,cardno,area,email,skillName,lastStudy,studyName,nowWork,workYears,studyDes,workDes,
-    majorDes,proveCpn,proveName,proveTel,userId,ab) VALUES(#{name},#{cardno},#{area},#{email},#{skillName},#{lastStudy},#{studyName},
+        insert into t_subuserpersonal (id,name,cardno,area,email,skillName,lastStudy,studyName,nowWork,workYears,studyDes,workDes,
+    majorDes,proveCpn,proveName,proveTel,userId,ab) VALUES(#{id},#{name},#{cardno},#{area},#{email},#{skillName},#{lastStudy},#{studyName},
     #{nowWork},#{workYears},#{studyDes},#{workDes},#{majorDes},#{proveCpn},#{proveName},#{proveTel},#{userId},#{ab});
        </insert>
 
