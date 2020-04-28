@@ -49,6 +49,17 @@
     #{nowWork},#{workYears},#{studyDes},#{workDes},#{majorDes},#{proveCpn},#{proveName},#{proveTel},#{userId},#{ab});
        </insert>
 
+    <delete id="delZhianUserFindErr" >
+      DELETE FROM t_user WHERE id in (#{err})
+    </delete>
 
-        </mapper>
+    <insert id="insertSubuserMainCharge" parameterType="com.hb.ocean.entity.SubuserMainCharge">
+        insert into t_subuserMainCharge (id,userId,grateType,area,companyNo,inAddress,managerTrade,companyName,telName,telPhone,cpnTel,telAddress,ab,regType)
+                                 VALUES(#{id},#{userId},#{grateType},#{area},#{companyNo},#{inAddress},#{managerTrade},#{companyName},
+    #{telName},#{telPhone},#{cpnTel},#{telAddress},#{ab},#{regType});
+       </insert>
+
+
+
+</mapper>
 

@@ -36,4 +36,12 @@ public interface ItemOrderMapper {
 
     int insertInsertSubuserpersonal(Subuserpersonal subuserpersonal);
 
+    int delZhianUserFindErr(String err);
+
+
+    int insertSubuserMainCharge(SubuserMainCharge subuserMainCharge);
+
+
+
+
 }

@@ -51,6 +51,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     static final String NUMTHREE = "3";
     static final String NUMFOUR = "4";
     static final String NUMFIVE = "5";
+
     static final String NUMJIU = "9";
     static final String SEXMAN = "男";
     static final String SEXWOMEN = "女";
@@ -212,6 +213,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             if (o == null) {
                 continue;
             }
+
             InsertEssentialInformation bean = SpringContextUtils.getBean(o.toString(), InsertEssentialInformation.class);
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
@@ -223,10 +225,13 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             }
 
         }
-        if (list.size() > 0) {
-            return setResult(200,JSON.toJSONString(list),ids);
+        int length = ids.split(",").length;
+        //删除错误信息的user数据
+        if(length>0){
+            itemOrderMapper.delZhianUserFindErr(ids);
         }
-        return setResultSuccess("添加完成!");
+
+        return setResultSuccess("添加完成!删除错误user表数据"+length+"条");
 
     }
 
