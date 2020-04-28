@@ -26,7 +26,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     {
         map = new HashMap<>();
         //1001主管机关
-        map.put(ZHUGUANJIGUAN,"insertSubuserMainChargeImpl");
+        map.put(ZHUGUANJIGUAN, "insertSubuserMainChargeImpl");
         //1002行业管理机构
         map.put(ZHUGUANBUMEN, "insertSubuserMainChargeImpl");
         //2001交通运输企业
@@ -34,7 +34,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         //3001从业人员
         map.put(CONGYERENYUAN, "insertSubuserpersonalImpl");
         //3002评审员
-        map.put(PINGSHENYUAN, "insertSubuserpersonalPsyImpl");
+        map.put(PINGSHENYUAN, "insertSubuserpersonalImpl");
         //4001第三方机构
         map.put(DISANFANGJIGOU, "insertSubuserThridImpl");
 
@@ -192,7 +192,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     @Override
     public BaseResponse delAllUser() {
         int i = itemOrderMapper.delZhianUserAll();
-        return setResultSuccess("删除了"+i+"条");
+        return setResultSuccess("删除了" + i + "条");
     }
 
     /**
@@ -202,27 +202,26 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      */
     @Override
     public BaseResponse insertEss() throws ParseException {
-        List<String> list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
-        for(ZhianUser zhianUser:zhianUserAllFindByAb) {
+        for (ZhianUser zhianUser : zhianUserAllFindByAb) {
             //根据用户类型获取bean
             Object o = map.get(zhianUser.getCertificationType());
-            if(o==null){
+            if (o == null) {
                 continue;
             }
             InsertEssentialInformation bean = SpringContextUtils.getBean(o.toString(), InsertEssentialInformation.class);
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
             if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
-                list.add(baseResponse.getMsg()+"\n");
+                list.add(baseResponse.getMsg() + "\n");
             }
         }
-        if(list.size()>0){
+        if (list.size() > 0) {
             return setResultError(JSON.toJSONString(list));
         }
         return setResultSuccess("添加完成!");
 
     }
-
 
 }

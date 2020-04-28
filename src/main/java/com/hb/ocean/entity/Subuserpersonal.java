@@ -80,6 +80,14 @@ public class Subuserpersonal {
      */
     private String proveTel;
 
+    /**
+     * userId
+     */
+    private String userId;
 
+    /**
+     * 是否是安标来的
+     */
+    private String ab;
 
 }

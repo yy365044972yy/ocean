@@ -34,6 +34,6 @@ public interface ItemOrderMapper {
 
     int getZhianSubuserTrafficByRoadTransportNO(String roadTransportNO);
 
-    int insertInsertSubuserpersonal();
+    int insertInsertSubuserpersonal(Subuserpersonal subuserpersonal);
 
 }

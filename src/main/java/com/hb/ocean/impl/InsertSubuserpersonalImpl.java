@@ -27,10 +27,9 @@ public class InsertSubuserpersonalImpl extends BaseApiService<String> implements
 //        首先查询老系统的人员表
         Subuserpersonal subuserpersonal = totalMapper.selectAbSubuserpersonalByLoginName(zhianUser.getAccount());
 //        拿到老系统的人员表信息，赋值到咱们现在的系统里,给身份改成评审员
-
-
-
-
+        subuserpersonal.setUserId(zhianUser.getId());
+        subuserpersonal.setAb("1");
+        itemOrderMapper.insertInsertSubuserpersonal(subuserpersonal);
 
         return setResultSuccess();
     }
