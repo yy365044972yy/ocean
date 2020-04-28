@@ -146,6 +146,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             //角色编号
             //因为没有注释，直接赋值进去了
             zhianUser.setCertificationType(certificationType);
+            zhianUser.setUserType(Integer.parseInt(certificationType));
             //(新)active是否有效(0否,1是)  (旧)state资料审查状态1可用0不可用
             zhianUser.setActive(abUser.getState() == null ? 0 : Integer.parseInt(abUser.getState()));
             //(新)email邮箱  (旧)email邮箱 (注)旧系统email字段全是空的
