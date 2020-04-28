@@ -25,5 +25,5 @@ public interface TotalMapper  {
 
     SubuserMainCharge getZhianSubuserMainChargeByLoginName(String loginName);
 
-    String getZhianSubuserMainChargeByLoginNameOne(String loginName);
+//    String getZhianSubuserMainChargeByLoginNameOne(String loginName);
 }

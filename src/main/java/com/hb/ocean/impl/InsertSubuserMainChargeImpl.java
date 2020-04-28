@@ -18,7 +18,7 @@ import java.util.UUID;
 @Component
 public class InsertSubuserMainChargeImpl extends BaseApiService<String> implements InsertEssentialInformation {
 
-    static final Integer NUMLIU = 6;
+
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
@@ -26,6 +26,7 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
     private TotalMapper totalMapper;
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
+        Integer NUMLIU = 6;
         SubuserMainCharge zhianSubuserMainChargeAll = totalMapper.getZhianSubuserMainChargeByLoginName(zhianUser.getAccount());
 
 //        基础信息填写
@@ -46,6 +47,22 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
             zhianSubuserMainChargeAll.setRegType("2");
         }
 
+        String grateType = zhianSubuserMainChargeAll.getGrateType();
+        switch (grateType){
+            case "省":
+                grateType="省级";
+                break;
+            case "市":
+                grateType="市级";
+                 break;
+            case "县":
+                grateType="区级";
+                break;
+                default:
+                    grateType="省级";
+                    break;
+        }
+        zhianSubuserMainChargeAll.setGrateType(grateType);
 
         itemOrderMapper.insertSubuserMainCharge(zhianSubuserMainChargeAll);
         return setResultSuccess();

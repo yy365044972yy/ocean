@@ -22,13 +22,13 @@
       select EvaluationClerkName as name,EvaluationClerkID as cardno,City as area,Email as email,SkillTitle as skillName,HighestDegree as lastStudy,Major as studyName,WorkMajor as nowWork,WorkMajorYears as workYears,LearningExperience as studyDes,WorkExperience as workDes,Archievement as majorDes,ProofUnit as proveCpn,ProofPerson as proveName,ProofPhone as proveTel from EvaluationClerk where LoginName=#{loginName}
     </select>
 
-    <select id="getZhianSubuserMainChargeByLoginName" resultType="com.hb.ocean.entity.subuserMainCharge">
+    <select id="getZhianSubuserMainChargeByLoginName" resultType="com.hb.ocean.entity.SubuserMainCharge">
     select ts.CityDegree as grateType,ts.City as area,t.OrganizationCode as companyNo,t.Address as inAddress,ts.Transporttype as managerTrade,t.CompetentName as companyName,t.ContactPerson as telName,t.MobileTelephone as telPhone,t.Telephone as cpnTel,t.Address as telAddress from Competent t,Competents ts where t.ID=ts.ID and LoginName=#{loginName}
     </select>
 
-    <select id="getZhianSubuserMainChargeByLoginNameOne" resultType="java.lang.String">
+   <!-- <select id="getZhianSubuserMainChargeByLoginNameOne" resultType="java.lang.String">
     select ts.Transporttype from Competent t,Competents ts where t.ID=ts.ID and t.LoginName=#{loginName}
-    </select>
+    </select>-->
 
 
 </mapper>

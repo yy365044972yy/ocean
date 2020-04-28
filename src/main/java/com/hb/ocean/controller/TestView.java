@@ -36,7 +36,7 @@ public class TestView {
 
     @GetMapping("/delUser")
     @ResponseBody
-    public BaseResponse delUser() throws Exception {
+    public BaseResponse delUser(){
         //user表处理
         BaseResponse baseResponse = abZhianService.delAllUser();
         return baseResponse;
