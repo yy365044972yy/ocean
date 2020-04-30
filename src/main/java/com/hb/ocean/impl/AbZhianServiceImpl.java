@@ -5,6 +5,7 @@ import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.constants.Constants;
 import com.hb.ocean.entity.AbUser;
+import com.hb.ocean.entity.Ukey;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
@@ -233,6 +234,36 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 
         return setResultSuccess("添加完成!删除错误user表数据"+length+"条");
 
+    }
+
+
+    @Override
+    public BaseResponse inserUkey(){
+//1.    获取老ukey数据
+
+        int tiaoguoNum=0;
+        int okNum=0;
+        List<Ukey> ukeys = totalMapper.selAllOldUkey();
+//2.    循环获取老ukey的id去对应新表t_user表查询abid
+        for(Ukey ukey:ukeys){
+            String abId = ukey.getAbid();
+            String userId = itemOrderMapper.getZhianUserIdByAbId(abId);
+            if(userId==null||Constants.ISNULL.equals(userId)){
+                tiaoguoNum++;
+                continue;
+            }
+            ukey.setUserId(userId);
+            ukey.setId(UUID.randomUUID().toString().replace("-",""));
+            ukey.setPassword("0");
+            ukey.setAb("1");
+
+            itemOrderMapper.insertZhianUkey(ukey);
+            okNum++;
+        }
+//3.    获取到现有的t_user的id
+//4.    循环插入t_ukey表
+
+        return setResultSuccess("成功数:"+okNum+",跳过数:"+tiaoguoNum);
     }
 
 }

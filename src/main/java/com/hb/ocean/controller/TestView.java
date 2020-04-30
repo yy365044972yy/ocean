@@ -1,5 +1,6 @@
 package com.hb.ocean.controller;
 
+import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.impl.InsertSubuserTrafficImpl;
 import com.hb.ocean.service.AbZhianService;
@@ -20,11 +21,16 @@ import java.text.ParseException;
  */
 @Controller
 @RequestMapping("/abzhian")
-public class TestView {
+public class TestView extends BaseApiService {
 
     @Autowired
     private AbZhianService abZhianService;
 
+    /**
+     * 迁移用户表
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/startUser")
     @ResponseBody
     public BaseResponse startUser() throws Exception {
@@ -34,10 +40,14 @@ public class TestView {
         return allUser;
     }
 
+    /**
+     * 删除用户表
+     * @return
+     */
     @GetMapping("/delUser")
     @ResponseBody
     public BaseResponse delUser(){
-        //user表处理
+//        //user表处理
         BaseResponse baseResponse = abZhianService.delAllUser();
         return baseResponse;
     }
@@ -49,11 +59,28 @@ public class TestView {
      * @throws ParseException
      */
 
+
     @GetMapping("/startUserMiddleTab")
     @ResponseBody
     public BaseResponse startUserMiddleTab() throws ParseException {
-        return abZhianService.insertEss();
+            return abZhianService.insertEss();
+
+
     }
+
+
+    /**
+     * 处理UKey
+     * @return
+     * @throws ParseException
+     */
+
+    @GetMapping("/startUkey")
+    @ResponseBody
+    public BaseResponse startUkey() throws ParseException {
+        return abZhianService.inserUkey();
+    }
+
 
 
 }

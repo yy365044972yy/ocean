@@ -41,6 +41,10 @@ public interface ItemOrderMapper {
 
     int insertSubuserMainCharge(SubuserMainCharge subuserMainCharge);
 
+    String getZhianUserIdByAbId(String abid);
+
+    int insertZhianUkey(Ukey ukey);
+
 
 
 

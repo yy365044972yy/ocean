@@ -15,6 +15,6 @@ public interface AbZhianService {
 
     BaseResponse insertEss() throws ParseException;
 
-
+    BaseResponse inserUkey();
 
 }

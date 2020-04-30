@@ -9,7 +9,7 @@
     </select>
 
     <insert id="insertAll" parameterType="com.hb.ocean.entity.ZhianUser">
-        insert into t_user (id,name,account,password,sex,mobile,email,active,createTime,ab,userRemark,certificationType) VALUES (#{id},#{name},#{account},#{password},#{sex},#{mobile},#{email},#{active},#{createTime},#{ab},#{userRemark},${certificationType});
+        insert into t_user (id,name,account,password,sex,mobile,email,active,createTime,ab,userRemark,certificationType,abId) VALUES (#{id},#{name},#{account},#{password},#{sex},#{mobile},#{email},#{active},#{createTime},#{ab},#{userRemark},${certificationType},#{abId});
     </insert>
 
     <delete id="delZhianUserAll" >
@@ -59,6 +59,14 @@
     #{telName},#{telPhone},#{cpnTel},#{telAddress},#{ab},#{regType});
        </insert>
 
+    <select id="getZhianUserIdByAbId" resultType="java.lang.String">
+        select id from t_user where abid=#{abid}
+    </select>
+
+    <insert id="insertZhianUkey" parameterType="com.hb.ocean.entity.Ukey">
+insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
+                                 VALUES(#{id},#{ptid},#{only},#{secretKey},#{userId},#{password},#{ab});
+       </insert>
 
 
 </mapper>

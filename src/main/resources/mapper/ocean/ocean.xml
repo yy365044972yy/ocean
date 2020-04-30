@@ -29,6 +29,8 @@
    <!-- <select id="getZhianSubuserMainChargeByLoginNameOne" resultType="java.lang.String">
     select ts.Transporttype from Competent t,Competents ts where t.ID=ts.ID and t.LoginName=#{loginName}
     </select>-->
-
+    <select id="selAllOldUkey" resultType="com.hb.ocean.entity.Ukey">
+    select UserID as abid,PID as ptid,PSN as only,Code as secretKey from UKeyInfos
+    </select>
 
 </mapper>
