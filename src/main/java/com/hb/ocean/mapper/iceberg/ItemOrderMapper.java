@@ -45,6 +45,12 @@ public interface ItemOrderMapper {
 
     int insertZhianUkey(Ukey ukey);
 
+    int delUserBySubuserpersonal();
+
+    int delUserBySubuserTraffic();
+
+    int delUserBySubuserMainCharge();
+
 
 
 

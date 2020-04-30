@@ -69,5 +69,18 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
        </insert>
 
 
+    <delete id="delUserBySubuserpersonal">
+          DELETE FROM t_subuserpersonal WHERE ab=1
+    </delete>
+
+    <delete id="delUserBySubuserTraffic">
+          DELETE FROM t_subuserTraffic WHERE ab=1
+    </delete>
+
+    <delete id="delUserBySubuserMainCharge">
+          DELETE FROM t_subuserMainCharge WHERE ab=1
+    </delete>
+
+
 </mapper>
 

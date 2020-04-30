@@ -52,6 +52,18 @@ public class TestView extends BaseApiService {
         return baseResponse;
     }
 
+    /**
+     * 删除角色表
+     * @return
+     */
+    @GetMapping("/delUserByType")
+    @ResponseBody
+    public BaseResponse delUserByType(){
+        return abZhianService.delAllUserByType();
+    }
+
+
+
 
     /**
      * 处理基础信息表后续的企业/主管机关/人员等表

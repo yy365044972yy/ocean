@@ -266,4 +266,12 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         return setResultSuccess("成功数:"+okNum+",跳过数:"+tiaoguoNum);
     }
 
+    @Override
+    public BaseResponse delAllUserByType() {
+        int i = itemOrderMapper.delUserBySubuserpersonal();
+        int i1 = itemOrderMapper.delUserBySubuserMainCharge();
+        int i2 = itemOrderMapper.delUserBySubuserTraffic();
+        return setResultSuccess("删除企业表数据"+i2+"条,主管机关/行业主管部门"+i1+"条,人员表"+i+"条");
+    }
+
 }
