@@ -12,6 +12,6 @@ public interface Constants {
 
     String ISNULL="";
 
-
+    Integer NUMLIU = 6;
 
 }

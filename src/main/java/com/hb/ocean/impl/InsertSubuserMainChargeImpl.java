@@ -2,6 +2,7 @@ package com.hb.ocean.impl;
 
 import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
+import com.hb.ocean.constants.Constants;
 import com.hb.ocean.entity.SubuserMainCharge;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
@@ -9,6 +10,7 @@ import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.InsertEssentialInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.util.UUID;
 
@@ -26,9 +28,12 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
     private TotalMapper totalMapper;
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
-        Integer NUMLIU = 6;
+
         SubuserMainCharge zhianSubuserMainChargeAll = totalMapper.getZhianSubuserMainChargeByLoginName(zhianUser.getAccount());
 
+        if(ObjectUtils.isEmpty(zhianSubuserMainChargeAll)){
+            return setResultError("帐号未找到,"+zhianUser.getAccount());
+        }
 //        基础信息填写
         zhianSubuserMainChargeAll.setId(UUID.randomUUID().toString().replace("-",""));
         zhianSubuserMainChargeAll.setUserId(zhianUser.getId());
@@ -41,14 +46,15 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
         }
 //        判断类型是否是6个，如果是6个就是主管机关，否则就是行业主管部门
         String[] split = zhianSubuserMainChargeAll.getManagerTrade().split(",");
-        if(split.length==NUMLIU){
+        if(split.length== Constants.NUMLIU){
             zhianSubuserMainChargeAll.setRegType("1");
         }else{
             zhianSubuserMainChargeAll.setRegType("2");
         }
 
         String grateType = zhianSubuserMainChargeAll.getGrateType();
-        switch (grateType){
+
+        switch (grateType==null?"":grateType){
             case "省":
                 grateType="省级";
                 break;
