@@ -108,6 +108,8 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
 
         abZhianService.insertSubuserCategory(subuserTraffic.getId(),subuserTraffic.getCompanyType(),subuserTraffic.getCompanySubType(),subuserTraffic.getUserId());
 
+        abZhianService.insertUserOrg(subuserTraffic.getCompanyName(), subuserTraffic.getUserId(), subuserTraffic.getProvince(), subuserTraffic.getCity(),
+                subuserTraffic.getArea(), Integer.valueOf(subuserTraffic.getSubserTrafficType()));
 
         return setResultSuccess();
     }

@@ -57,6 +57,10 @@ public interface ItemOrderMapper {
 
     int delSubuserCateGory();
 
+    int insertOrg(Org org);
+
+    int insertUserOrg(UserOrg userOrg);
+
 
 
 }

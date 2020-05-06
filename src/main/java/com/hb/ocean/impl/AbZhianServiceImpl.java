@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.constants.Constants;
-import com.hb.ocean.entity.AbUser;
-import com.hb.ocean.entity.SubuserCategory;
-import com.hb.ocean.entity.Ukey;
-import com.hb.ocean.entity.ZhianUser;
+import com.hb.ocean.entity.*;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.AbZhianService;
@@ -319,6 +316,34 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         }
 
 
+        return setResultSuccess();
+    }
+
+    @Override
+    public BaseResponse insertUserOrg(String orgName, String userId, String provice, String city, String area, Integer orgType) {
+        // 先删除
+
+        Org org = new Org();
+        org.setId(UUID.randomUUID().toString().replace("-",""));
+        org.setName(orgName);
+        org.setComcode("," + org.getId() + ",");
+        org.setPersonId(userId);
+        org.setOrgType(orgType);
+        org.setBak1(provice);
+        org.setBak2(city);
+        org.setBak3(area);
+        org.setActive(1);
+        org.setAb("1");
+        itemOrderMapper.insertOrg(org);
+
+        UserOrg userOrg = new UserOrg();
+        userOrg.setId(UUID.randomUUID().toString().replace("-",""));
+        userOrg.setManagerType(11);
+        userOrg.setUserId(userId);
+        userOrg.setOrgId(org.getId());
+        userOrg.setHasleaf(1);
+        userOrg.setAb("1");
+        itemOrderMapper.insertUserOrg(userOrg);
         return setResultSuccess();
     }
 

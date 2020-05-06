@@ -94,5 +94,13 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
         DELETE FROM t_subuserCategory WHERE ab=1
     </delete>
 
+    <insert id="insertOrg">
+    INSERT INTO t_org(id, name, comcode,personId,orgType,active,ab,bak1,bak2,bak3 ) VALUES (#{id}, #{name}, #{comcode},#{personId},#{orgType},#{active},#{ab},#{bak1},#{bak2},#{bak3});
+    </insert>
+    <insert id="insertUserOrg">
+    INSERT INTO t_user_org(id, userId, orgId, managerType, hasleaf, ab) VALUES (#{id}, #{userId}, #{orgId}, #{managerType}, #{hasleaf}, #{ab});
+    </insert>
+
+
 </mapper>
 

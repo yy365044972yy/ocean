@@ -29,4 +29,8 @@ public interface AbZhianService {
      */
     BaseResponse insertSubuserCategory(String mid,String bigType,String smallType,String userId);
 
+
+    BaseResponse insertUserOrg(String orgName, String userId, String provice, String city, String area, Integer orgType);
+
+
 }
