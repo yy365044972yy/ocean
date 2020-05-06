@@ -5,6 +5,7 @@ import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.constants.Constants;
 import com.hb.ocean.entity.AbUser;
+import com.hb.ocean.entity.SubuserCategory;
 import com.hb.ocean.entity.Ukey;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
@@ -14,6 +15,7 @@ import com.hb.ocean.service.InsertEssentialInformation;
 import com.hb.ocean.utils.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -205,9 +207,9 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
      */
     @Override
     public BaseResponse insertEss() throws ParseException {
-        List<Map<String,String>> list = new ArrayList<>();
+        List<Map<String, String>> list = new ArrayList<>();
         List<ZhianUser> zhianUserAllFindByAb = itemOrderMapper.getZhianUserAllFindByAb();
-        String ids="";
+        String ids = "";
         for (ZhianUser zhianUser : zhianUserAllFindByAb) {
             //根据用户类型获取bean
             Object o = map.get(zhianUser.getCertificationType());
@@ -219,41 +221,42 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             BaseResponse baseResponse = bean.toInsert(zhianUser);
             //判断状态码
             if (!Constants.HTTP_RES_CODE_200.equals(baseResponse.getCode())) {
-                Map<String,String> map=new HashMap<>();
-                map.put("msg",baseResponse.getMsg().split(",")[0]);
+                Map<String, String> map = new HashMap<>();
+                map.put("msg", baseResponse.getMsg().split(",")[0]);
                 list.add(map);
-                ids+=baseResponse.getMsg().split(",")[1]+",";
+                ids += baseResponse.getMsg().split(",")[1] + ",";
             }
 
         }
         int length = ids.split(",").length;
         //删除错误信息的user数据
-        if(length>0){
+        if (length > 0) {
             itemOrderMapper.delZhianUserFindErr(ids);
         }
 
-        return setResultSuccess("添加完成!删除错误user表数据"+length+"条");
+
+        return setResultSuccess("添加完成!删除错误user表数据" + length + "条");
 
     }
 
 
     @Override
-    public BaseResponse inserUkey(){
+    public BaseResponse inserUkey() {
 //1.    获取老ukey数据
 
-        int tiaoguoNum=0;
-        int okNum=0;
+        int tiaoguoNum = 0;
+        int okNum = 0;
         List<Ukey> ukeys = totalMapper.selAllOldUkey();
 //2.    循环获取老ukey的id去对应新表t_user表查询abid
-        for(Ukey ukey:ukeys){
+        for (Ukey ukey : ukeys) {
             String abId = ukey.getAbid();
             String userId = itemOrderMapper.getZhianUserIdByAbId(abId);
-            if(userId==null||Constants.ISNULL.equals(userId)){
+            if (userId == null || Constants.ISNULL.equals(userId)) {
                 tiaoguoNum++;
                 continue;
             }
             ukey.setUserId(userId);
-            ukey.setId(UUID.randomUUID().toString().replace("-",""));
+            ukey.setId(UUID.randomUUID().toString().replace("-", ""));
             ukey.setPassword("0");
             ukey.setAb("1");
 
@@ -263,7 +266,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 //3.    获取到现有的t_user的id
 //4.    循环插入t_ukey表
 
-        return setResultSuccess("成功数:"+okNum+",跳过数:"+tiaoguoNum);
+        return setResultSuccess("成功数:" + okNum + ",跳过数:" + tiaoguoNum);
     }
 
     @Override
@@ -271,7 +274,52 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         int i = itemOrderMapper.delUserBySubuserpersonal();
         int i1 = itemOrderMapper.delUserBySubuserMainCharge();
         int i2 = itemOrderMapper.delUserBySubuserTraffic();
-        return setResultSuccess("删除企业表数据"+i2+"条,主管机关/行业主管部门"+i1+"条,人员表"+i+"条");
+        return setResultSuccess("删除企业表数据" + i2 + "条,主管机关/行业主管部门" + i1 + "条,人员表" + i + "条");
+    }
+
+    @Override
+    public BaseResponse insertSubuserCategory(String mid, String bigType, String smallType,String userId) {
+
+        if (StringUtils.isEmpty(bigType)) {
+            return setResultError("大类型为空");
+        }
+        String[] bigTypeSplit = bigType.split(",");
+
+
+        for(String e:bigTypeSplit){
+            SubuserCategory subuserCategory=new SubuserCategory();
+            subuserCategory.setId(UUID.randomUUID().toString().replace("-",""));
+            subuserCategory.setMainId(mid);
+            subuserCategory.setPid(null);
+            subuserCategory.setCategoryId(e);
+            subuserCategory.setActive("1");
+            subuserCategory.setAb("1");
+            subuserCategory.setOkDate(new Date());
+            subuserCategory.setUserId(userId);
+            itemOrderMapper.insertSubuserCategory(subuserCategory);
+        }
+
+        if(StringUtils.isEmpty(smallType)){
+            smallType="";
+        }
+        String[] smallTypeSplit = smallType.split(",");
+
+
+        for(String e:smallTypeSplit){
+            String dicDataPid = itemOrderMapper.getDicDataPid(e);
+            SubuserCategory subuserCategory=new SubuserCategory();
+            subuserCategory.setId(UUID.randomUUID().toString().replace("-",""));
+            subuserCategory.setMainId(mid);
+            subuserCategory.setPid(dicDataPid);
+            subuserCategory.setCategoryId(e);
+            subuserCategory.setActive("1");
+            subuserCategory.setAb("1");
+            subuserCategory.setOkDate(new Date());
+            subuserCategory.setUserId(userId);
+            itemOrderMapper.insertSubuserCategory(subuserCategory);
+        }
+
+        return setResultSuccess();
     }
 
 }

@@ -6,7 +6,9 @@ import com.hb.ocean.constants.Constants;
 import com.hb.ocean.entity.*;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
+import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,8 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
+    @Autowired
+    private AbZhianService abZhianService;
 
     private Map<String,String> bigType=new HashMap<>();
     private Map<String,String> smallType=new HashMap<>();
@@ -77,12 +81,34 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
         subuserTraffic.setRoadTransportNO(abSubuserTraffic.getRoadTransportNO());
         subuserTraffic.setRegAddress(abSubuserTraffic.getRegisteAddress());
         subuserTraffic.setCompanyNo(abSubuserTraffic.getOrganizationCode());
-        String s = bigType.get(abSubuserTraffic.getBusinessTypeOne());
-        String s2 = smallType.get(abSubuserTraffic.getBusinessTypeTwo());
+
+        //将类型转换规范形式
+        String s = "";
+        String s2 = "";
+        String big = abSubuserTraffic.getBusinessTypeOne().replace("|", ",").replace("，", ",");
+        String[] split = big.split(",");
+
+        for(String e:split){
+            //类型转换成id
+            s+=bigType.get(e)+",";
+        }
+        s=s.substring(0,s.length()-1);
+        String sm = abSubuserTraffic.getBusinessTypeTwo().replace("|", ",").replace("，", ",");
+        String[] split1 = sm.split(",");
+        for(String e:split1){
+            //小类转换id
+            s2+=smallType.get(e)+",";
+        }
+        s2=s2.substring(0,s2.length()-1);
+
         subuserTraffic.setCompanyType(s==null||Constants.ISNULL.equals(s)?"":s);
         subuserTraffic.setCompanySubType(s2==null||Constants.ISNULL.equals(s2)?"":s2);
         subuserTraffic.setAb("1");
         itemOrderMapper.insertSubuserTraffic(subuserTraffic);
+
+        abZhianService.insertSubuserCategory(subuserTraffic.getId(),subuserTraffic.getCompanyType(),subuserTraffic.getCompanySubType(),subuserTraffic.getUserId());
+
+
         return setResultSuccess();
     }
 }

@@ -3,15 +3,20 @@ package com.hb.ocean.impl;
 import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
 import com.hb.ocean.constants.Constants;
+import com.hb.ocean.entity.DicData;
 import com.hb.ocean.entity.SubuserMainCharge;
 import com.hb.ocean.entity.ZhianUser;
 import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
+import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -20,7 +25,8 @@ import java.util.UUID;
 @Component
 public class InsertSubuserMainChargeImpl extends BaseApiService<String> implements InsertEssentialInformation {
 
-
+    private Map<String,String> bigType=new HashMap<>();
+    private Map<String,String> smallType=new HashMap<>();
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
@@ -28,6 +34,19 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
     private TotalMapper totalMapper;
     @Override
     public BaseResponse toInsert(ZhianUser zhianUser) {
+
+        if(bigType.size()==0||smallType.size()==0){
+            bigType=new HashMap<>();
+            smallType=new HashMap<>();
+            List<DicData> dicData = itemOrderMapper.getDicData();
+            for(DicData d:dicData){
+                if(d.getPid()==null||Constants.ISNULL.equals(d.getPid())){
+                    bigType.put(d.getName(),d.getId());
+                }else{
+                    smallType.put(d.getName(),d.getId());
+                }
+            }
+        }
 
         SubuserMainCharge zhianSubuserMainChargeAll = totalMapper.getZhianSubuserMainChargeByLoginName(zhianUser.getAccount());
 
@@ -42,7 +61,14 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
         if(zhianSubuserMainChargeAll.getManagerTrade()==null){
             zhianSubuserMainChargeAll.setManagerTrade("");
         }else{
-            zhianSubuserMainChargeAll.setManagerTrade(zhianSubuserMainChargeAll.getManagerTrade().replace("|",","));
+            String replace = zhianSubuserMainChargeAll.getManagerTrade().replace("|", ",");
+            String[] split = replace.split(",");
+            String bigtypes="";
+            for(String e:split){
+                bigtypes+=bigType.get(e)+",";
+            }
+            bigtypes=bigtypes.substring(0,bigtypes.length()-1);
+            zhianSubuserMainChargeAll.setManagerTrade(bigtypes);
         }
 //        判断类型是否是6个，如果是6个就是主管机关，否则就是行业主管部门
         String[] split = zhianSubuserMainChargeAll.getManagerTrade().split(",");
@@ -71,6 +97,11 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
         zhianSubuserMainChargeAll.setGrateType(grateType);
 
         itemOrderMapper.insertSubuserMainCharge(zhianSubuserMainChargeAll);
+
+        abZhianService.insertSubuserCategory(zhianSubuserMainChargeAll.getId(),zhianSubuserMainChargeAll.getManagerTrade(),"",zhianSubuserMainChargeAll.getUserId());
         return setResultSuccess();
     }
+
+    @Autowired
+    private AbZhianService abZhianService;
 }

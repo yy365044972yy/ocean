@@ -81,6 +81,14 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
           DELETE FROM t_subuserMainCharge WHERE ab=1
     </delete>
 
+    <select id="getDicDataPid">
+        select pid from t_dic_data where id=#{typeId}
+    </select>
+
+    <insert id="insertSubuserCategory" parameterType="com.hb.ocean.entity.SubuserCategory">
+       INSERT INTO t_subuserCategory(id, mainId, categoryId, pid, userId, okDate, active, ab) VALUES (#{id},#{mainId}, #{categoryId}, #{pid}, #{userId}, #{okDate}, #{active}, #{ab});
+
+    </insert>
 
 </mapper>
 

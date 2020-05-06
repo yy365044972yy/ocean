@@ -51,6 +51,9 @@ public interface ItemOrderMapper {
 
     int delUserBySubuserMainCharge();
 
+    String getDicDataPid(String typeId);
+
+    int insertSubuserCategory(SubuserCategory subuserCategory);
 
 
 
