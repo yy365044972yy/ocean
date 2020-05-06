@@ -90,5 +90,9 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
 
     </insert>
 
+    <delete id="delSubuserCateGory">
+        DELETE FROM t_subuserCategory WHERE ab=1
+    </delete>
+
 </mapper>
 

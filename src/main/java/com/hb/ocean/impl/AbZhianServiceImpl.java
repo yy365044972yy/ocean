@@ -225,14 +225,14 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
                 map.put("msg", baseResponse.getMsg().split(",")[0]);
                 list.add(map);
                 ids += baseResponse.getMsg().split(",")[1] + ",";
+                //删除错误信息的user数据
+                itemOrderMapper.delZhianUserFindErr(baseResponse.getMsg().split(",")[1]);
             }
+
 
         }
         int length = ids.split(",").length;
-        //删除错误信息的user数据
-        if (length > 0) {
-            itemOrderMapper.delZhianUserFindErr(ids);
-        }
+
 
 
         return setResultSuccess("添加完成!删除错误user表数据" + length + "条");
@@ -274,7 +274,8 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         int i = itemOrderMapper.delUserBySubuserpersonal();
         int i1 = itemOrderMapper.delUserBySubuserMainCharge();
         int i2 = itemOrderMapper.delUserBySubuserTraffic();
-        return setResultSuccess("删除企业表数据" + i2 + "条,主管机关/行业主管部门" + i1 + "条,人员表" + i + "条");
+        int i3 = itemOrderMapper.delSubuserCateGory();
+        return setResultSuccess("删除企业表数据" + i2 + "条,主管机关/行业主管部门" + i1 + "条,人员表" + i + "条,类型子表条数:"+i3+"条");
     }
 
     @Override
@@ -299,25 +300,24 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             itemOrderMapper.insertSubuserCategory(subuserCategory);
         }
 
-        if(StringUtils.isEmpty(smallType)){
-            smallType="";
-        }
+
         String[] smallTypeSplit = smallType.split(",");
-
-
-        for(String e:smallTypeSplit){
-            String dicDataPid = itemOrderMapper.getDicDataPid(e);
-            SubuserCategory subuserCategory=new SubuserCategory();
-            subuserCategory.setId(UUID.randomUUID().toString().replace("-",""));
-            subuserCategory.setMainId(mid);
-            subuserCategory.setPid(dicDataPid);
-            subuserCategory.setCategoryId(e);
-            subuserCategory.setActive("1");
-            subuserCategory.setAb("1");
-            subuserCategory.setOkDate(new Date());
-            subuserCategory.setUserId(userId);
-            itemOrderMapper.insertSubuserCategory(subuserCategory);
+        if(!StringUtils.isEmpty(smallType)){
+            for(String e:smallTypeSplit){
+                String dicDataPid = itemOrderMapper.getDicDataPid(e);
+                SubuserCategory subuserCategory=new SubuserCategory();
+                subuserCategory.setId(UUID.randomUUID().toString().replace("-",""));
+                subuserCategory.setMainId(mid);
+                subuserCategory.setPid(StringUtils.isEmpty(dicDataPid)?"???":dicDataPid);
+                subuserCategory.setCategoryId(e);
+                subuserCategory.setActive("1");
+                subuserCategory.setAb("1");
+                subuserCategory.setOkDate(new Date());
+                subuserCategory.setUserId(userId);
+                itemOrderMapper.insertSubuserCategory(subuserCategory);
+            }
         }
+
 
         return setResultSuccess();
     }
