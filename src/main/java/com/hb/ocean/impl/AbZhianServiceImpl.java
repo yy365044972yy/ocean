@@ -9,9 +9,12 @@ import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
+import com.hb.ocean.utils.DateUtilsLyz;
 import com.hb.ocean.utils.SpringContextUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -39,6 +42,25 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         map.put(DISANFANGJIGOU, "insertSubuserThridImpl");
 
     }
+
+    public Map<String, String> mapSubject;
+    {
+        map = new HashMap<>();
+        //1001主管机关
+        map.put("评审员-收费公路运营", "07d9a28b364448c38b86df7728682728");
+        //1002行业管理机构
+        map.put("评审员-交通运输工程建设", "6bf06fd9c44d446b86bcc6c9fc1ed6c6");
+        //2001交通运输企业
+        map.put("评审员-城市客运", "9dc393360fab46debbb90b01638db725");
+        //3001从业人员
+        map.put("评审员-港口营运", "9de3a0ec6a334a7dbe2adc2cec93694f");
+        //3002评审员
+        map.put("评审员-道路运输", "bcf536ff10c346368a8ed5876ad88751");
+        //4001第三方机构
+        map.put("评审员-水路运输", "fd7d2262b1264018891cd43ec44b0d36");
+    }
+
+    static final String ab_sysId = "3ed22058ac364d26a36568f281152ac7";
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
@@ -345,6 +367,61 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         userOrg.setAb("1");
         itemOrderMapper.insertUserOrg(userOrg);
         return setResultSuccess();
+    }
+
+    @Override
+    public BaseResponse delMissionAll() {
+        int i = itemOrderMapper.delMissionAll();
+        return setResultSuccess("删除了" + i + "条");
+    }
+
+    @Override
+    public BaseResponse insertMission() throws ParseException {
+
+        List<AbExamPoints> listAb=totalMapper.selectAbExamPointsAll();
+        int continueNoBaeNum = 0;
+        int continueHaveNum = 0;
+        int okNum = 0;
+        for(AbExamPoints abPoint:listAb){
+
+            //TODO 首先判断 当前 人员数据是否同步过来
+            String zhianUser=itemOrderMapper.getZhianUserIdByAbId(abPoint.getAssessorId());
+            if(StringUtils.isEmpty(zhianUser)){
+                continueNoBaeNum++;
+                continue;
+            }
+
+            Mission misOne=itemOrderMapper.selectMissionById(abPoint.getId());
+            if(!ObjectUtils.isEmpty(misOne)){
+                continueHaveNum++;
+                continue;
+            }
+
+            Mission mission=new Mission();
+            mission.setId(UUID.randomUUID().toString().replace("-", ""));
+            mission.setUserId(zhianUser);
+            mission.setSubId(mapSubject.get("评审员-收费公路运营"+abPoint.getBusinessType()));
+            mission.setSysId(ab_sysId);
+            mission.setExamTime(DateUtilsLyz.parseDate(abPoint.getExamDate()));
+            mission.setExamResult("未提供");
+            mission.setExamScore(abPoint.getPoints());
+            //todo 是否考试
+            mission.setStatus(StringUtils.isEmpty(abPoint.getPoints())?1:2);
+            //TODO 考试的结果
+            mission.setResultStatus(StringUtils.isEmpty(abPoint.getStatus())?0:1);
+            mission.setAd(NUMONE);
+            mission.setAdId(abPoint.getId());
+            mission.setAbUserId(abPoint.getAssessorId());
+            mission.setAbBeginTime(DateUtilsLyz.parseDate(abPoint.getDateBegin()));
+            mission.setAbEndTime(DateUtilsLyz.parseDate(abPoint.getDateEnd()));
+            try {
+                itemOrderMapper.insertMission(mission);
+            } catch (Exception e) {
+                return setResultError("错误数据" + JSON.toJSONString(mission) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage()));
+            }
+            okNum++;
+        }
+       return setResultSuccess("总数量:" + (ObjectUtils.isEmpty(listAb)?0:listAb.size()) + "\n因基础用户数据未同步跳过数量:" + continueNoBaeNum + "\n因当前数据已同步跳过数量:" + continueNoBaeNum +"\n成功数量:" + okNum);
     }
 
 }

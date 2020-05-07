@@ -61,6 +61,12 @@ public interface ItemOrderMapper {
 
     int insertUserOrg(UserOrg userOrg);
 
+    //TODO 加考试
+    int insertMission(Mission mission);
 
+    //TODO 删除所有有关的旧系统数据
+    int delMissionAll();
 
+    //TODO 根据旧系统id 获取数据 用于判断是否已同步
+    Mission selectMissionById(String adExamPointId);
 }

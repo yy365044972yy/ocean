@@ -94,5 +94,32 @@ public class TestView extends BaseApiService {
     }
 
 
+    /**
+     * 迁移考试记录表
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/startMission")
+    @ResponseBody
+    public BaseResponse startMission() throws Exception {
+        //user表处理
+        BaseResponse baseResponse = abZhianService.insertMission();
+
+        return baseResponse;
+    }
+
+    /**
+     * 删除旧系统数据
+     * @return
+     */
+    @GetMapping("/delAbMission")
+    @ResponseBody
+    public BaseResponse delAbMission(){
+//        //user表处理
+        BaseResponse baseResponse = abZhianService.delMissionAll();
+        return baseResponse;
+    }
+
+
 
 }

@@ -6,7 +6,7 @@
 <!--写老系统的SQL语句-->
     <select id="selectUserAll" resultType="com.hb.ocean.entity.AbUser">
         select <include refid="AbUser" /> from HUser group by LoginName
-      </select>
+    </select>
 
     <select id="selectUserFindId" resultType="com.hb.ocean.entity.AbUser">
         select <include refid="AbUser" /> from HUser where UserID=#{id}
@@ -31,6 +31,13 @@
     </select>-->
     <select id="selAllOldUkey" resultType="com.hb.ocean.entity.Ukey">
     select UserID as abid,PID as ptid,PSN as only,Code as secretKey from UKeyInfos
+    </select>
+
+
+
+    <sql id="AbExamPoints">ID,Assessorid,Businesstype,Points,ExamDate,DateBegin,DateEnd,Status</sql>
+    <select id="selectAbExamPointsAll" resultType="com.hb.ocean.entity.AbExamPoints">
+        select <include refid="AbExamPoints" /> from AbExamPoints
     </select>
 
 </mapper>
