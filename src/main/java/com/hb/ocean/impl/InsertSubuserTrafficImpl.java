@@ -8,6 +8,7 @@ import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
+import com.hb.ocean.utils.pca.PCAUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -104,6 +105,29 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
         subuserTraffic.setCompanyType(s==null||Constants.ISNULL.equals(s)?"":s);
         subuserTraffic.setCompanySubType(s2==null||Constants.ISNULL.equals(s2)?"":s2);
         subuserTraffic.setAb("1");
+
+
+        subuserTraffic.setCity(abSubuserTraffic.getCity());
+        //判断地区是否正确
+
+        String city = subuserTraffic.getCity();
+        String getname = PCAUtils.getname(city);
+        String getdq = PCAUtils.getdq(getname);
+        subuserTraffic.setProvince("410000");
+        if("省级".equals(getdq)){
+            subuserTraffic.setProvince(city);
+            subuserTraffic.setCity(null);
+            subuserTraffic.setArea(null);
+        }
+        if("市级".equals(getdq)){
+            subuserTraffic.setArea(null);
+        }
+        if("区级".equals(getdq)){
+            subuserTraffic.setCity(PCAUtils.getPid(city));
+            subuserTraffic.setArea(city);
+        }
+
+
         itemOrderMapper.insertSubuserTraffic(subuserTraffic);
 
         //将类型从企业表放置到子表中

@@ -14,7 +14,7 @@
 
 
     <select id="selectAbSubuserTrafficFindLoginName" resultType="com.hb.ocean.entity.AbSubuserTraffic">
-        select BusinessName,RoadTransportNO,LicenseGoodBegain,LicenseGoodEnd,RegisteAddress,BusinessTypeOne,BusinessTypeTwo,OrganizationCode  from Enterprise where LoginName=#{LoginName}
+        select BusinessName,RoadTransportNO,LicenseGoodBegain,LicenseGoodEnd,RegisteAddress,BusinessTypeOne,BusinessTypeTwo,OrganizationCode,City  from Enterprise where LoginName=#{LoginName}
       </select>
 
 

@@ -10,6 +10,7 @@ import com.hb.ocean.mapper.iceberg.ItemOrderMapper;
 import com.hb.ocean.mapper.ocean.TotalMapper;
 import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
+import com.hb.ocean.utils.pca.PCAUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -50,13 +51,35 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
 
         SubuserMainCharge zhianSubuserMainChargeAll = totalMapper.getZhianSubuserMainChargeByLoginName(zhianUser.getAccount());
 
+
         if(ObjectUtils.isEmpty(zhianSubuserMainChargeAll)){
             return setResultError("帐号未找到,"+zhianUser.getAccount());
         }
+
 //        基础信息填写
         zhianSubuserMainChargeAll.setId(UUID.randomUUID().toString().replace("-",""));
         zhianSubuserMainChargeAll.setUserId(zhianUser.getId());
         zhianSubuserMainChargeAll.setAb("1");
+
+        //判断地区是否正确
+        String city = zhianSubuserMainChargeAll.getCity();
+        String getname = PCAUtils.getname(city);
+        String getdq = PCAUtils.getdq(getname);
+        zhianSubuserMainChargeAll.setProvince("410000");
+        if("省级".equals(getdq)){
+            zhianSubuserMainChargeAll.setProvince(city);
+            zhianSubuserMainChargeAll.setCity(null);
+            zhianSubuserMainChargeAll.setArea(null);
+        }
+        if("市级".equals(getdq)){
+            zhianSubuserMainChargeAll.setArea(null);
+        }
+        if("区级".equals(getdq)){
+            zhianSubuserMainChargeAll.setCity(PCAUtils.getPid(city));
+            zhianSubuserMainChargeAll.setArea(city);
+        }
+
+
 
 //        判断类型是否是空的，不是空的将|替换成逗号
         if(zhianSubuserMainChargeAll.getManagerTrade()==null){
