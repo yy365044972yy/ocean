@@ -57,6 +57,7 @@ public class InsertSubuserMainChargeImpl extends BaseApiService<String> implemen
         zhianSubuserMainChargeAll.setId(UUID.randomUUID().toString().replace("-",""));
         zhianSubuserMainChargeAll.setUserId(zhianUser.getId());
         zhianSubuserMainChargeAll.setAb("1");
+
 //        判断类型是否是空的，不是空的将|替换成逗号
         if(zhianSubuserMainChargeAll.getManagerTrade()==null){
             zhianSubuserMainChargeAll.setManagerTrade("");
