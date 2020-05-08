@@ -81,7 +81,7 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
           DELETE FROM t_subuserMainCharge WHERE ab=1
     </delete>
 
-    <select id="getDicDataPid">
+    <select id="getDicDataPid" resultType="java.lang.String">
         select pid from t_dic_data where id=#{typeId}
     </select>
 

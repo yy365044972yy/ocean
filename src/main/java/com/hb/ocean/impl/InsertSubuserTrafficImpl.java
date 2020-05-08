@@ -106,8 +106,10 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
         subuserTraffic.setAb("1");
         itemOrderMapper.insertSubuserTraffic(subuserTraffic);
 
+        //将类型从企业表放置到子表中
         abZhianService.insertSubuserCategory(subuserTraffic.getId(),subuserTraffic.getCompanyType(),subuserTraffic.getCompanySubType(),subuserTraffic.getUserId());
 
+        //将企业添加默认的部门
         abZhianService.insertUserOrg(subuserTraffic.getCompanyName(), subuserTraffic.getUserId(), subuserTraffic.getProvince(), subuserTraffic.getCity(),
                 subuserTraffic.getArea(), Integer.valueOf(subuserTraffic.getSubserTrafficType()));
 
