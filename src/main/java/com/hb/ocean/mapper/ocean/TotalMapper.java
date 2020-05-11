@@ -28,4 +28,7 @@ public interface TotalMapper  {
      //TODO 获取所有老系统的用户考试记录
      List<AbExamPoints> selectAbExamPointsAll();
 
+    //TODO 获取所有老系统的证书记录
+    List<CertificateInfos> selectCertificateInfosAll();
+
 }

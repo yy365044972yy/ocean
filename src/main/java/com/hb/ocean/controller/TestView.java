@@ -2,17 +2,13 @@ package com.hb.ocean.controller;
 
 import com.hb.ocean.base.BaseApiService;
 import com.hb.ocean.base.BaseResponse;
-import com.hb.ocean.impl.InsertSubuserTrafficImpl;
+
 import com.hb.ocean.service.AbZhianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.text.ParseException;
 
 
@@ -102,7 +98,6 @@ public class TestView extends BaseApiService {
     @GetMapping("/startMission")
     @ResponseBody
     public BaseResponse startMission() throws Exception {
-        //user表处理
         BaseResponse baseResponse = abZhianService.insertMission();
 
         return baseResponse;
@@ -115,8 +110,30 @@ public class TestView extends BaseApiService {
     @GetMapping("/delAbMission")
     @ResponseBody
     public BaseResponse delAbMission(){
-//        //user表处理
         BaseResponse baseResponse = abZhianService.delMissionAll();
+        return baseResponse;
+    }
+
+    /**
+     * 迁移证书数据
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/startZhengshu")
+    @ResponseBody
+    public BaseResponse startZhengshu() throws Exception {
+        BaseResponse baseResponse = abZhianService.insertZheShu();
+        return baseResponse;
+    }
+
+    /**
+     * 删除旧系统证书数据
+     * @return
+     */
+    @GetMapping("/delZheShuAll")
+    @ResponseBody
+    public BaseResponse delZheShuAll(){
+        BaseResponse baseResponse = abZhianService.delZheShuAll();
         return baseResponse;
     }
 

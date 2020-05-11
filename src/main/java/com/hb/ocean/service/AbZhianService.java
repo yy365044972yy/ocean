@@ -32,9 +32,17 @@ public interface AbZhianService {
 
     BaseResponse insertUserOrg(String orgName, String userId, String provice, String city, String area, Integer orgType);
 
-
+    //TODO ----考试结果-------------------------------------------
     //TODO 删除数据
     BaseResponse delMissionAll();
     //TODO 增加数据
     BaseResponse insertMission() throws ParseException;
+
+    //TODO ------证书--------------------------------------------
+    //TODO 删除数据
+    BaseResponse delZheShuAll();
+    //TODO 增加数据
+    BaseResponse insertZheShu() throws ParseException;
+
+
 }

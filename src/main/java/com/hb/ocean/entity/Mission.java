@@ -55,8 +55,8 @@ public class Mission implements Serializable {
 
 
 	//TODO 新增的数据
-    private String ad;
-    private String adId;
+    private String ab;
+    private String abId;
 	private String abUserId;
 	private Date abBeginTime;
 	private Date abEndTime;

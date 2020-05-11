@@ -34,10 +34,17 @@
     </select>
 
 
-
+    <!--TODO 获取所有旧系统的考试结果-->
     <sql id="AbExamPoints">ID,Assessorid,Businesstype,Points,ExamDate,DateBegin,DateEnd,Status</sql>
     <select id="selectAbExamPointsAll" resultType="com.hb.ocean.entity.AbExamPoints">
-        select <include refid="AbExamPoints" /> from AbExamPoints
+        select <include refid="AbExamPoints" /> from AssessorExamPoints
+    </select>
+
+
+    <!--TODO 获取所有旧系统的证书结果-->
+    <sql id="CertificateInfos">ID,UserID,BusinessType,CertificateID,ExpiryBegin,ExpiryEnd,CertificateTCB,CertificatePath,CertificateDegree,RoleName,Memo,SelfAssessPath,AssessReportPath,Operatetime,Status,Operator</sql>
+    <select id="selectCertificateInfosAll" resultType="com.hb.ocean.entity.CertificateInfos">
+        select <include refid="CertificateInfos" /> from CertificateInfos
     </select>
 
 </mapper>

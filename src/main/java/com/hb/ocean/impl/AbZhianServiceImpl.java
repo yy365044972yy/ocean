@@ -11,7 +11,6 @@ import com.hb.ocean.service.AbZhianService;
 import com.hb.ocean.service.InsertEssentialInformation;
 import com.hb.ocean.utils.DateUtilsLyz;
 import com.hb.ocean.utils.SpringContextUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -45,19 +44,19 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 
     public Map<String, String> mapSubject;
     {
-        map = new HashMap<>();
+        mapSubject = new HashMap<>();
         //1001主管机关
-        map.put("评审员-收费公路运营", "07d9a28b364448c38b86df7728682728");
+        mapSubject.put("评审员-收费公路运营", "07d9a28b364448c38b86df7728682728");
         //1002行业管理机构
-        map.put("评审员-交通运输工程建设", "6bf06fd9c44d446b86bcc6c9fc1ed6c6");
+        mapSubject.put("评审员-交通运输工程建设", "6bf06fd9c44d446b86bcc6c9fc1ed6c6");
         //2001交通运输企业
-        map.put("评审员-城市客运", "9dc393360fab46debbb90b01638db725");
+        mapSubject.put("评审员-城市客运", "9dc393360fab46debbb90b01638db725");
         //3001从业人员
-        map.put("评审员-港口营运", "9de3a0ec6a334a7dbe2adc2cec93694f");
+        mapSubject.put("评审员-港口营运", "9de3a0ec6a334a7dbe2adc2cec93694f");
         //3002评审员
-        map.put("评审员-道路运输", "bcf536ff10c346368a8ed5876ad88751");
+        mapSubject.put("评审员-道路运输", "bcf536ff10c346368a8ed5876ad88751");
         //4001第三方机构
-        map.put("评审员-水路运输", "fd7d2262b1264018891cd43ec44b0d36");
+        mapSubject.put("评审员-水路运输", "fd7d2262b1264018891cd43ec44b0d36");
     }
 
     static final String ab_sysId = "3ed22058ac364d26a36568f281152ac7";
@@ -400,20 +399,20 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             Mission mission=new Mission();
             mission.setId(UUID.randomUUID().toString().replace("-", ""));
             mission.setUserId(zhianUser);
-            mission.setSubId(mapSubject.get("评审员-收费公路运营"+abPoint.getBusinessType()));
+            mission.setSubId(mapSubject.get("评审员-"+abPoint.getBusinessType()));
             mission.setSysId(ab_sysId);
-            mission.setExamTime(DateUtilsLyz.parseDate(abPoint.getExamDate()));
+            mission.setExamTime(getHaveDate(abPoint.getExamDate()));
             mission.setExamResult("未提供");
             mission.setExamScore(abPoint.getPoints());
             //todo 是否考试
             mission.setStatus(StringUtils.isEmpty(abPoint.getPoints())?1:2);
             //TODO 考试的结果
-            mission.setResultStatus(StringUtils.isEmpty(abPoint.getStatus())?0:1);
-            mission.setAd(NUMONE);
-            mission.setAdId(abPoint.getId());
+            mission.setResultStatus(StringUtils.isEmpty(abPoint.getPoints())?1:Integer.parseInt(abPoint.getPoints())>90?2:1);
+            mission.setAb(NUMONE);
+            mission.setAbId(abPoint.getId());
             mission.setAbUserId(abPoint.getAssessorId());
-            mission.setAbBeginTime(DateUtilsLyz.parseDate(abPoint.getDateBegin()));
-            mission.setAbEndTime(DateUtilsLyz.parseDate(abPoint.getDateEnd()));
+            mission.setAbBeginTime(getHaveDate(abPoint.getDateBegin()));
+            mission.setAbEndTime(getHaveDate(abPoint.getDateEnd()));
             try {
                 itemOrderMapper.insertMission(mission);
             } catch (Exception e) {
@@ -421,7 +420,143 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
             }
             okNum++;
         }
-       return setResultSuccess("总数量:" + (ObjectUtils.isEmpty(listAb)?0:listAb.size()) + "\n因基础用户数据未同步跳过数量:" + continueNoBaeNum + "\n因当前数据已同步跳过数量:" + continueNoBaeNum +"\n成功数量:" + okNum);
+       return setResultSuccess("总数量:" + (ObjectUtils.isEmpty(listAb)?0:listAb.size()) + "\n因基础用户数据未同步跳过数量:" + continueNoBaeNum + "\n因当前数据已同步跳过数量:" + continueHaveNum +"\n成功数量:" + okNum);
+    }
+
+    @Override
+    public BaseResponse delZheShuAll() {
+        int i = itemOrderMapper.delAbAssessorCertificateAll();
+        int m = itemOrderMapper.delCertificatesAll();
+        return setResultSuccess("删除了" +( i+m)+ "条");
+    }
+
+    @Override
+    public BaseResponse insertZheShu() throws ParseException {
+
+
+        List<CertificateInfos> listAb=totalMapper.selectCertificateInfosAll();
+        int continueNoBaeNum = 0;
+        int continueHaveNum = 0;
+        int okNum = 0;
+        for(CertificateInfos certificateInfos:listAb) {
+
+          //TODO 首先判断 当前 人员数据是否同步过来
+            String zhianUser = itemOrderMapper.getZhianUserIdByAbId(certificateInfos.getUserId());
+            if (StringUtils.isEmpty(zhianUser)) {
+                continueNoBaeNum++;
+                continue;
+            }
+            //TODO 判断数据是否已同步
+            AbCertificate certificates = itemOrderMapper.selectCertificatesById(certificateInfos.getId());
+            if (!ObjectUtils.isEmpty(certificates)) {
+                continueHaveNum++;
+                continue;
+            }
+            String roleName = certificateInfos.getRoleName();
+            String typeid=itemOrderMapper.getDicDataByName(certificateInfos.getBusinessType());
+            if ("评审员".equals(roleName)) {
+
+                AbAssessorCertificate obj = new AbAssessorCertificate();
+                obj.setId(UUID.randomUUID().toString().replace("-", ""));
+                obj.setCertificate(certificateInfos.getCertificateId());
+                obj.setTypeId(typeid);
+                obj.setCreateTime(null);
+                obj.setStartTime(DateUtilsLyz.parseDate(certificateInfos.getExpiryBegin()));
+                obj.setEndTime(DateUtilsLyz.parseDate(certificateInfos.getExpiryEnd()));
+                //公示结束时间
+                //obj.setPublicityEndDate();
+                obj.setState(getSatuteDate(certificateInfos.getStatus()));
+                obj.setUserId(zhianUser);
+                //TODO 考试得分
+                //obj.setFraction();
+
+                obj.setYear(StringUtils.isEmpty(certificateInfos.getExpiryEnd())?DateUtilsLyz.getDataYear(new Date()):DateUtilsLyz.getDataYear(obj.getEndTime()));
+                obj.setMes(certificateInfos.getMemo());
+                obj.setAb(NUMONE);
+                obj.setAbId(certificateInfos.getId());
+                obj.setAbUserId(certificateInfos.getUserId());
+                try {
+                    itemOrderMapper.insertAbAssessorCertificate(obj);
+                } catch (Exception e) {
+                    return setResultError("评审员证书错误数据" + JSON.toJSONString(obj) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage()));
+                }
+                okNum++;
+
+            } else if ("企业".equals(roleName) || "评价机构".equals(roleName)) {
+
+                AbCertificate qyObj = new AbCertificate();
+                qyObj.setId(UUID.randomUUID().toString().replace("-", ""));
+                //qyObj.setBodyId();
+                qyObj.setUserId(zhianUser);
+                qyObj.setPidUserId(certificateInfos.getOperator());
+                qyObj.setNumber(certificateInfos.getCertificateId());
+                qyObj.setOneDate(DateUtilsLyz.parseDate(certificateInfos.getExpiryBegin()));
+                qyObj.setTwoDate(DateUtilsLyz.parseDate(certificateInfos.getExpiryEnd()));
+                qyObj.setGrade(certificateInfos.getCertificateDegree());
+                //qyObj.setCreateDate();
+                qyObj.setKinds(typeid);
+                qyObj.setFile(certificateInfos.getCertificatePath());
+                qyObj.setActive(((new Date()).getTime()>(qyObj.getTwoDate()).getTime())?"1":"0");
+                qyObj.setType(("评价机构".equals(roleName))?"0":"1");
+                qyObj.setStatus(StringUtils.isEmpty(certificateInfos.getStatus())?"4":certificateInfos.getStatus());
+                qyObj.setAb(NUMONE);
+                qyObj.setAbId(certificateInfos.getId());
+                qyObj.setAbUserId(certificateInfos.getUserId());
+                try {
+                    itemOrderMapper.insertCertificates(qyObj);
+                } catch (Exception e) {
+                    return setResultError("企业证书错误数据" + JSON.toJSONString(qyObj) + "\n错误信息:" + JSON.toJSONString(e.getLocalizedMessage()));
+                }
+                okNum++;
+            }
+
+        }
+        return setResultSuccess("总数量:" + (ObjectUtils.isEmpty(listAb)?0:listAb.size()) + "\n因基础用户数据未同步跳过数量:" + continueNoBaeNum + "\n因当前数据已同步跳过数量:" + continueHaveNum +"\n成功数量:" + okNum);
+    }
+
+
+    public Date getHaveDate(String dat) throws ParseException {
+        Date datD=null;
+        if(!StringUtils.isEmpty(dat)){
+           String str1[]=dat.split(" ");
+           if(str1.length>1){
+               String str[]=str1[0].split("/");
+               String newDa=str[2]+"/"+str[1]+"/"+str[0]+" "+str1[1];
+               datD=DateUtilsLyz.parseDate(newDa);
+           }else{
+               String str[]=dat.split("/");
+               String newDa=str[2]+"/"+str[1]+"/"+str[0];
+               datD=DateUtilsLyz.parseDate(newDa);
+           }
+        }
+       return datD;
+    }
+
+    public Integer getSatuteDate(String dat) throws ParseException {
+        Integer datD=null;
+        if(StringUtils.isEmpty(dat)) {
+            datD=4;
+        }else{
+           // 0等待开始1考试通过2考试不通过4公示通过3公示不通过5正在公式 10冻结   11 其他
+            if(dat.equals("等待开始")){
+                datD=0;
+            }else if(dat.equals("考试通过")){
+                datD=1;
+            }else if(dat.equals("考试不通过")){
+                datD=2;
+            }else if(dat.equals("公示通过")){
+                datD=4;
+            }else if(dat.equals("公示不通过")){
+                datD=3;
+            }else if(dat.equals("正在公示")){
+                datD=5;
+            }else if(dat.equals("冻结")){
+                datD=10;
+            }else{
+                datD=11;
+            }
+        }
+        return datD;
     }
 
 }
