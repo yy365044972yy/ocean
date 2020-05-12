@@ -15,7 +15,7 @@ public class GlobalExceptionHandler extends BaseApiService {
 
         // 得到异常棧的首个元素
         StackTraceElement stackTraceElement = ex.getStackTrace()[0];
-        return setResultError("程序运行错误,文件名:" + stackTraceElement.getFileName() + ",错误行数:" + stackTraceElement.getLineNumber() + ",错误方法:" + stackTraceElement.getMethodName());
+        return setResultError("程序运行错误,文件名:" + stackTraceElement.getFileName() + ",错误行数:" + stackTraceElement.getLineNumber() + ",错误方法:" + stackTraceElement.getMethodName()+",错误信息:"+ex.getMessage());
 
     }
 
