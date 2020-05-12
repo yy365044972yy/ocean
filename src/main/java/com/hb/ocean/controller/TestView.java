@@ -107,5 +107,51 @@ public class TestView extends BaseApiService {
         return setResultSuccess();
     }
 
+    /**
+     * 迁移考试记录表
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/startMission")
+    @ResponseBody
+    public BaseResponse startMission() throws Exception {
+        BaseResponse baseResponse = abZhianService.insertMission();
+
+        return baseResponse;
+    }
+
+    /**
+     * 删除旧系统数据
+     * @return
+     */
+    @GetMapping("/delAbMission")
+    @ResponseBody
+    public BaseResponse delAbMission(){
+        BaseResponse baseResponse = abZhianService.delMissionAll();
+        return baseResponse;
+    }
+
+    /**
+     * 迁移证书数据
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/startZhengshu")
+    @ResponseBody
+    public BaseResponse startZhengshu() throws Exception {
+        BaseResponse baseResponse = abZhianService.insertZheShu();
+        return baseResponse;
+    }
+
+    /**
+     * 删除旧系统证书数据
+     * @return
+     */
+    @GetMapping("/delZheShuAll")
+    @ResponseBody
+    public BaseResponse delZheShuAll(){
+        BaseResponse baseResponse = abZhianService.delZheShuAll();
+        return baseResponse;
+    }
 
 }
