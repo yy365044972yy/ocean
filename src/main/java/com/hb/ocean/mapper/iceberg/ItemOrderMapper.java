@@ -52,6 +52,7 @@ public interface ItemOrderMapper {
     int delUserBySubuserMainCharge();
 
     String getDicDataPid(String typeId);
+    String getDicDataByName(String name);
 
     int insertSubuserCategory(SubuserCategory subuserCategory);
 
@@ -61,6 +62,25 @@ public interface ItemOrderMapper {
 
     int insertUserOrg(UserOrg userOrg);
 
+    //TODO 加考试
+    int insertMission(Mission mission);
+    //TODO 删除所有有关的旧系统数据
+    int delMissionAll();
+    //TODO 根据旧系统id 获取数据 用于判断是否已同步
+    Mission selectMissionById(String adExamPointId);
 
+    //TODO 增加评审员证书
+    int insertAbAssessorCertificate(AbAssessorCertificate abAssessorCertificate);
+    //TODO 删除所有有关的旧系统评审员证书数据
+    int delAbAssessorCertificateAll();
+    //TODO 根据旧系统id 获取评审员证书数据 用于判断是否已同步
+    AbAssessorCertificate selectAbAssessorCertificateById(String adId);
+
+    //TODO 增加企业证书
+    int insertCertificates(AbCertificate abCertificate);
+    //TODO 删除所有有关的旧系统企业证书数据
+    int delCertificatesAll();
+    //TODO 根据旧系统id 获取企业证书数据 用于判断是否已同步
+    AbCertificate selectCertificatesById(String adId);
 
 }

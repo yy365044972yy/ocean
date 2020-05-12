@@ -13,12 +13,9 @@ public interface TotalMapper  {
     /*@Param("id") String id*/
     List<AbUser> selectUserAll();
 
-
     AbUser selectUserFindId(String id);
 
     AbSubuserTraffic selectAbSubuserTrafficFindLoginName(String LoginName);
-
-
 
     Subuserpersonal selectAbSubuserpersonalByLoginName( String loginName);
 
@@ -27,5 +24,11 @@ public interface TotalMapper  {
 
 //    String getZhianSubuserMainChargeByLoginNameOne(String loginName);
     List<Ukey> selAllOldUkey();
+
+     //TODO 获取所有老系统的用户考试记录
+     List<AbExamPoints> selectAbExamPointsAll();
+
+    //TODO 获取所有老系统的证书记录
+    List<CertificateInfos> selectCertificateInfosAll();
 
 }

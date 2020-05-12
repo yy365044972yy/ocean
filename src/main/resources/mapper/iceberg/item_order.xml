@@ -85,6 +85,10 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
         select pid from t_dic_data where id=#{typeId}
     </select>
 
+    <select id="getDicDataByName"  resultType="java.lang.String">
+        select id from t_dic_data where name=#{name}
+    </select>
+
     <insert id="insertSubuserCategory" parameterType="com.hb.ocean.entity.SubuserCategory">
        INSERT INTO t_subuserCategory(id, mainId, categoryId, pid, userId, okDate, active, ab) VALUES (#{id},#{mainId}, #{categoryId}, #{pid}, #{userId}, #{okDate}, #{active}, #{ab});
 
@@ -100,6 +104,62 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
     <insert id="insertUserOrg">
     INSERT INTO t_user_org(id, userId, orgId, managerType, hasleaf, ab) VALUES (#{id}, #{userId}, #{orgId}, #{managerType}, #{hasleaf}, #{ab});
     </insert>
+
+
+    <!--TODO 增加安标系统的数据-->
+    <!--TODO 考试-->
+    <!-- TODO 新增数据-->
+    <insert id="insertMission" parameterType="com.hb.ocean.entity.Mission">
+        insert into ks_mission (id,userId,sysId,examTime,subId,examResult,examScore,status,resultStatus,ab,abId,abUserId,abBeginTime,abEndTime)
+                      VALUES (#{id},#{userId},#{sysId},#{examTime},#{subId},#{examResult},#{examScore},#{status},#{resultStatus},#{ab},#{abId},${abUserId},#{abBeginTime},#{abEndTime});
+    </insert>
+    <!-- TODO 删除数据-->
+    <delete id="delMissionAll" >
+      DELETE FROM ks_mission WHERE ab=1
+    </delete>
+    <!-- TODO 获取单个数据-->
+    <select id="selectMissionById" resultType="com.hb.ocean.entity.Mission">
+        select * from ks_mission where abid=#{adExamPointId}
+    </select>
+
+
+    <!--TODO 评审员证书-->
+    <!-- TODO 新增数据-->
+    <insert id="insertAbAssessorCertificate" parameterType="com.hb.ocean.entity.AbAssessorCertificate">
+        insert into ab_assessor_certificate
+        (id,certificate,typeId,createTime,startTime,endTime,state,userId,
+        fraction,year,mes,publicityEndDate,bak1,bak2,bak3,bak4,bak5,ab,abId,abUserId)
+         VALUES
+        (#{id},#{certificate},#{typeId},#{createTime},#{startTime},#{endTime},#{state},#{userId},
+        #{fraction},#{year},#{mes},#{publicityEndDate},#{bak1},#{bak2},#{bak3},#{bak4},#{bak5},#{ab},#{abId},${abUserId});
+    </insert>
+    <!-- TODO 删除数据-->
+    <delete id="delAbAssessorCertificateAll" >
+      DELETE FROM ab_assessor_certificate WHERE ab=1
+    </delete>
+    <!-- TODO 获取单个数据-->
+    <select id="selectAbAssessorCertificateById" resultType="com.hb.ocean.entity.AbAssessorCertificate">
+        select * from ab_assessor_certificate where abid=#{adExamPointId}
+    </select>
+
+    <!--TODO 企业证书-->
+    <!-- TODO 新增数据-->
+    <insert id="insertCertificates" parameterType="com.hb.ocean.entity.AbCertificate">
+        insert into ab_certificate
+        (id,bodyId,userId,pidUserId,number,oneDate,twoDate,grade,
+        kinds,createDate,file,active,type,status,bak1,bak2,bak3,bak4,bak5,ab,abId,abUserId)
+        VALUES
+        (#{id},#{bodyId},#{userId},#{pidUserId},#{number},#{oneDate},#{twoDate},#{grade},
+        #{kinds},#{createDate},#{file},#{active},#{type},#{status},#{bak1},#{bak2},#{bak3},#{bak4},#{bak5},#{ab},#{abId},${abUserId});
+    </insert>
+    <!-- TODO 删除数据-->
+    <delete id="delCertificatesAll" >
+      DELETE FROM ab_certificate WHERE ab=1
+    </delete>
+    <!-- TODO 获取单个数据-->
+    <select id="selectCertificatesById" resultType="com.hb.ocean.entity.AbCertificate">
+        select * from ab_certificate where abid=#{abid}
+    </select>
 
 
 </mapper>
