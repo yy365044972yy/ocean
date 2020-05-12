@@ -30,7 +30,7 @@
 
 
     <insert id="insertSubuserTraffic" parameterType="com.hb.ocean.entity.SubuserTraffic">
-        insert into t_subuserTraffic (id,userId,companyName,comTime,comfailureTime,roadTransportNO,regAddress,companyNo,companyType,companySubType) VALUES (#{id},#{userId},#{companyName},#{comTime},#{comfailureTime},#{roadTransportNO},#{regAddress},#{companyNo},#{companyType},#{companySubType});
+        insert into t_subuserTraffic (id,userId,companyName,comTime,comfailureTime,roadTransportNO,regAddress,companyNo,companyType,companySubType,province,city,area) VALUES (#{id},#{userId},#{companyName},#{comTime},#{comfailureTime},#{roadTransportNO},#{regAddress},#{companyNo},#{companyType},#{companySubType},#{province},#{city},#{area});
         </insert>
 
     <select id="getDicData" resultType="com.hb.ocean.entity.DicData">
@@ -54,8 +54,8 @@
     </delete>
 
     <insert id="insertSubuserMainCharge" parameterType="com.hb.ocean.entity.SubuserMainCharge">
-        insert into t_subuserMainCharge (id,userId,grateType,area,companyNo,inAddress,managerTrade,companyName,telName,telPhone,cpnTel,telAddress,ab,regType)
-                                 VALUES(#{id},#{userId},#{grateType},#{area},#{companyNo},#{inAddress},#{managerTrade},#{companyName},
+        insert into t_subuserMainCharge (id,userId,grateType,province,city,area,companyNo,inAddress,managerTrade,companyName,telName,telPhone,cpnTel,telAddress,ab,regType)
+                                 VALUES(#{id},#{userId},#{grateType},#{province},#{city},#{area},#{companyNo},#{inAddress},#{managerTrade},#{companyName},
     #{telName},#{telPhone},#{cpnTel},#{telAddress},#{ab},#{regType});
        </insert>
 
@@ -81,7 +81,7 @@ insert into t_ukey (id,ptid,only,secretKey,userId,password,ab)
           DELETE FROM t_subuserMainCharge WHERE ab=1
     </delete>
 
-    <select id="getDicDataPid">
+    <select id="getDicDataPid" resultType="java.lang.String">
         select pid from t_dic_data where id=#{typeId}
     </select>
 

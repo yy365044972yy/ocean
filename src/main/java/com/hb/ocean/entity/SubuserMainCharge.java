@@ -23,9 +23,19 @@ public class SubuserMainCharge implements Serializable {
     private String grateType;
 
     /**
+     * 省
+     */
+    private String province;
+
+    /**
      * 区
      */
     private String area;
+
+    /**
+     * 市
+     */
+    private String city;
 
     /**
      * 统一信用代码

@@ -296,6 +296,14 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         return setResultSuccess("删除企业表数据" + i2 + "条,主管机关/行业主管部门" + i1 + "条,人员表" + i + "条,类型子表条数:"+i3+"条");
     }
 
+    /**
+     * //将类型从企业表放置到子表中
+     * @param mid 表mid字段
+     * @param bigType 表categoryId
+     * @param smallType
+     * @param userId
+     * @return
+     */
     @Override
     public BaseResponse insertSubuserCategory(String mid, String bigType, String smallType,String userId) {
 
@@ -340,6 +348,16 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
         return setResultSuccess();
     }
 
+    /**
+     * 将企业添加默认的部门
+     * @param orgName
+     * @param userId
+     * @param provice
+     * @param city
+     * @param area
+     * @param orgType
+     * @return
+     */
     @Override
     public BaseResponse insertUserOrg(String orgName, String userId, String provice, String city, String area, Integer orgType) {
         // 先删除

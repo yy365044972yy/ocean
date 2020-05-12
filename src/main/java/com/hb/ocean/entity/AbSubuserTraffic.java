@@ -40,4 +40,9 @@ public class AbSubuserTraffic implements Serializable {
      */
     private String organizationCode;
 
+    /**
+     * 地区
+     */
+    private String City;
+
 }
