@@ -135,7 +135,7 @@ public class InsertSubuserTrafficImpl extends BaseApiService<String> implements 
 
         //将企业添加默认的部门
         abZhianService.insertUserOrg(subuserTraffic.getCompanyName(), subuserTraffic.getUserId(), subuserTraffic.getProvince(), subuserTraffic.getCity(),
-                subuserTraffic.getArea(), Integer.valueOf(subuserTraffic.getSubserTrafficType()));
+                subuserTraffic.getArea(), 1);
 
         return setResultSuccess();
     }

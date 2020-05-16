@@ -102,6 +102,12 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
     @Override
     public BaseResponse getAllUser() throws Exception {
 
+        //存储已存在账户名导致无法保存的数据
+        String loginName="";
+        //用户身份异常
+        String userErr="";
+
+
         List<AbUser> users = totalMapper.selectUserAll();
 //        List<ZhianUser> zhianUserAll = itemOrderMapper.getZhianUserAll();
         int continueNum = 0;
@@ -111,12 +117,14 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 //            先判断下现系统是否有该账号
             if (abUser.getLoginName() == null || ISNUMM.equals(abUser.getLoginName())) {
                 continueNum++;
+                loginName+=abUser.getLoginName()+",";
                 continue;
             }
 
             int i = itemOrderMapper.selectZhianUserFindAccount(abUser.getLoginName());
             if (i > 0) {
                 continueNum++;
+                loginName+=abUser.getLoginName()+",";
                 continue;
             }
 
@@ -156,6 +164,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
                     break;*/
                 default:
                     //不确定的类型暂时跳过，后期需要再处理
+                    userErr+=abUser.getLoginName()+",";
                     continueNum++;
                     continue;
 //                    certificationType = "";
@@ -204,7 +213,7 @@ public class AbZhianServiceImpl extends BaseApiService implements AbZhianService
 //        String b = JSON.toJSONString(users);
 //        System.out.println(s);
 //        System.out.println(b);
-        return setResultSuccess("总数量:" + users.size() + "\n跳过数量:" + continueNum + "\n成功数量:" + okNum);
+        return setResultSuccess("总数量:" + users.size() + "\n跳过数量:" + continueNum + "\n成功数量:" + okNum+"\n帐号问题跳过:"+loginName+"\n用户身份异常:"+userErr);
     }
 
     /**

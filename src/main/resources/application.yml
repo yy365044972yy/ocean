@@ -16,9 +16,9 @@ druid:
   minIdle: 5
   maxActive: 20
   testOnBorrow: false
-  urlIceberg: jdbc:mysql://39.107.248.247:3306/zhian?serverTimezone=GMT%2B8&characterEncoding=UTF-8&useSSL=false
+#  urlIceberg: jdbc:mysql://39.107.248.247:3306/zhian?serverTimezone=GMT%2B8&characterEncoding=UTF-8&useSSL=false
+  urlIceberg: jdbc:mysql://119.3.126.254:3308/zhian?serverTimezone=GMT%2B8&characterEncoding=UTF-8&useSSL=false
   urlOcean: jdbc:mysql://119.3.126.254:3308/JTYS?serverTimezone=GMT%2B8&characterEncoding=UTF-8&useSSL=false
-#  urlAccount: jdbc:mysql://106.12.176.120/account?serverTimezone=GMT%2B8&characterEncoding=UTF-8&useSSL=false  # 设置时区
 logging:
   level:
     com.hb.ocean.mapper: debug #打印sql
